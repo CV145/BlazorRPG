@@ -5,6 +5,10 @@ VisualStudioVersion = 17.5.33502.453
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorRPG", "BlazorRPG\BlazorRPG.csproj", "{F70DC9B9-74B3-45D6-BB52-93731A5197AD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleRPG.Tests", "SimpleRPG.Tests\SimpleRPG.Tests.csproj", "{B75A062F-4DA6-4C44-8456-53458397BB7D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RPG.Game.Engine", "RPG.Game.Engine\RPG.Game.Engine.csproj", "{4075FA8A-CF3D-471B-95E6-7E5E83ED2F9E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{F70DC9B9-74B3-45D6-BB52-93731A5197AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F70DC9B9-74B3-45D6-BB52-93731A5197AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F70DC9B9-74B3-45D6-BB52-93731A5197AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B75A062F-4DA6-4C44-8456-53458397BB7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B75A062F-4DA6-4C44-8456-53458397BB7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B75A062F-4DA6-4C44-8456-53458397BB7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B75A062F-4DA6-4C44-8456-53458397BB7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4075FA8A-CF3D-471B-95E6-7E5E83ED2F9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4075FA8A-CF3D-471B-95E6-7E5E83ED2F9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4075FA8A-CF3D-471B-95E6-7E5E83ED2F9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4075FA8A-CF3D-471B-95E6-7E5E83ED2F9E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
