@@ -7,13 +7,30 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Shared\PlayerComponent.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Blazorise.Bootstrap" Version="0.9.1" />
+    <PackageReference Include="bunit" Version="1.18.4" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.15" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.15" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\RPG.Game.Engine\RPG.Game.Engine.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Shared\PlayerComponent.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Shared\PlayerComponent.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Pages\PlayerComponent.razor" />
   </ItemGroup>
 
 </Project>

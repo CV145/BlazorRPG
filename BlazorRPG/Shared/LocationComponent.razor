@@ -1,0 +1,13 @@
+﻿<div Style="border: 1px solid gainsboro; text-align: center">
+	<div>@Location.Name</div>
+	<Figure>
+		<FigureImage Source="@Location.ImageName"/>
+		<FigureCaption>@Location.Description</FigureCaption>
+	</Figure>
+</div>
+
+@code {
+	//New instance of Location class
+	[Parameter]
+	public Location Location { get; set; } = new Location();
+}

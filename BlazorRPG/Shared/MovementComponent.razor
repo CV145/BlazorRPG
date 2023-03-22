@@ -1,0 +1,55 @@
+﻿@if (Movement != null)
+{
+    <Row>
+        <Column Class="text-center">
+            <Button id="move-north-btn" Color="Color.Secondary" Margin="Margin.Is1"
+                Disabled="@(!Movement.CanMoveNorth)" Clicked="Movement.MoveNorth"
+                Style="width: 65px">
+                North
+            </Button>
+        </Column>
+    </Row>
+    <Row>
+        <Column Class="text-center">
+            <Button id="move-west-btn" Color="Color.Secondary" Margin="Margin.Is1"
+                Disabled="@(!Movement.CanMoveWest)" Clicked="Movement.MoveWest"
+                Style="width: 65px">
+                West
+            </Button>
+        </Column>
+        <Column Class="text-center">
+            <Button id="move-east-btn" Color="Color.Secondary" Margin="Margin.Is1"
+                Disabled="@(!Movement.CanMoveEast)" Clicked="Movement.MoveEast"
+                Style="width: 65px">
+                East
+            </Button>
+        </Column>
+    </Row>
+    <Row>
+        <Column Class="text-center">
+            <Button id="move-south-btn" Color="Color.Secondary" Margin="Margin.Is1"
+                Disabled="@(!Movement.CanMoveSouth)" Clicked="Movement.MoveSouth"
+                Style="width: 65px">
+                South
+            </Button>
+        </Column>
+    </Row>
+}
+
+@code {
+    [Parameter]
+    public MovementUnit? Movement { get; set; }
+
+    [Parameter]
+    public EventCallback<Location> LocationChanged
+    {
+        get => (Movement is null) ? default : Movement.LocationChanged;
+        set
+        {
+            if (Movement != null)
+            {
+                Movement.LocationChanged = value;
+            }
+        }
+    }
+}

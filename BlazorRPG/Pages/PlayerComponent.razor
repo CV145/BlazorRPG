@@ -1,0 +1,37 @@
+﻿@using RPG.Game.Engine.Models;
+<Table Borderless="true" Narrow="true">
+    <TableHeader>
+        <TableHeaderCell RowSpan="2">Player Data</TableHeaderCell>
+    </TableHeader>
+    <TableBody>
+        <TableRow>
+            <TableRowCell>Name:</TableRowCell>
+            <TableRowCell>@Player.Name</TableRowCell>
+        </TableRow>
+        <TableRow>
+            <TableRowCell>Class:</TableRowCell>
+            <TableRowCell>@Player.CharacterClass</TableRowCell>
+        </TableRow>
+        <TableRow>
+            <TableRowCell>Hit points:</TableRowCell>
+            <TableRowCell>@Player.HitPoints</TableRowCell>
+        </TableRow>
+        <TableRow>
+            <TableRowCell>Gold:</TableRowCell>
+            <TableRowCell>@Player.Gold</TableRowCell>
+        </TableRow>
+        <TableRow>
+            <TableRowCell>XP:</TableRowCell>
+            <TableRowCell>@Player.ExperiencePoints</TableRowCell>
+        </TableRow>
+        <TableRow>
+            <TableRowCell>Level:</TableRowCell>
+            <TableRowCell>@Player.Level</TableRowCell>
+        </TableRow>
+    </TableBody>
+</Table>
+ 
+@code {
+    [Parameter]
+    public Player Player { get; set; } = new Player();
+}

@@ -1,4 +1,5 @@
-﻿using RPG.Game.Engine.Models;
+﻿using RPG.Game.Engine.Factories;
+using RPG.Game.Engine.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,19 @@ using System.Threading.Tasks;
 
 namespace RPG.Game.Engine.ViewModels
 {
-    public class GameSession
+    public interface IGameSession
     {
-        public Player CurrentPlayer { get; set; }
+        Player CurrentPlayer { get; }
+        Location CurrentLocation { get; }
+        void AddXP();
+    }
+
+    //Current game state/instance
+    public class GameSession : IGameSession
+    {
+        public World CurrentWorld { get;private set; }
+        public Player CurrentPlayer { get; private set; }
+        public Location CurrentLocation { get; private set; }
 
         public GameSession()
         {
@@ -24,7 +35,10 @@ namespace RPG.Game.Engine.ViewModels
 				ExperiencePoints = 0,
 				Level = 1
 			};
-		}
+
+            this.CurrentWorld = WorldFactory.CreateWorld();
+            this.CurrentLocation = this.CurrentWorld.GetHomeLocation();
+        }
 
         public void AddXP()
         {

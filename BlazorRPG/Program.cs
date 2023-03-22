@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Blazorise;
 using Blazorise.Bootstrap;
+using RPG.Game.Engine.ViewModels;
 
-var builder = WebAssemblyHostBuilder.CreateDefault(args);
+ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
@@ -17,9 +18,19 @@ builder.Services
               })
               .AddBootstrapProviders();
 
+// add app-specific/custom services and view models here...
+AppServiceConfig.ConfigureAppServices(builder.Services);
+
 var host = builder.Build();
 host.Services.UseBootstrapProviders();
+
+// initialize app-specific/custom services and view models here...
+AppServiceConfig.InitializeAppServices(host.Services);
+
 await host.RunAsync();
+
+
+
 
 /*
  * Add using references to Blazorize,
