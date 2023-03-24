@@ -1,0 +1,19 @@
+<h3>Game Messages:</h3>
+<div style="height: 800px; overflow-y:scroll;">
+	@foreach (MessageBox box in MessageBoxes)
+	{
+		<h1>@box.Title</h1>
+		<ul>
+		@foreach (string msg in box.Messages)
+		{
+			@msg
+		}
+		</ul>
+		<br />
+	}
+</div>
+
+@code{
+	[Parameter]
+	public IEnumerable<MessageBox> MessageBoxes { get; set; } = new List<MessageBox>();
+}

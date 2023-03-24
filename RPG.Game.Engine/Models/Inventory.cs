@@ -31,8 +31,9 @@ namespace RPG.Game.Engine.Models
         public IReadOnlyList<GameItem> Items => _backingInventory.AsReadOnly();
 
         public IReadOnlyList<ItemBundle> GroupedItems => _backingGroupedInventory.AsReadOnly();
+		public IEnumerable<GameItem> Weapons => _backingInventory.Where(i => i is Weapon);
 
-        public void AddItem(GameItem item)
+		public void AddItem(GameItem item)
         {
             _ = item ?? throw new ArgumentNullException(nameof(item));
 

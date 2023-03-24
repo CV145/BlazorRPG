@@ -24,7 +24,8 @@ namespace RPG.Game.Engine.Factories
                         CurrentHitPoints = 4,
                         MaximumHitPoints = 4,
                         RewardExperiencePoints = 5,
-                        Gold = 1
+                        Gold = 1,
+                        DamageRoll = "1d2"
                     };
 
                     AddLootItem(snake, 9001, 25);
@@ -39,8 +40,9 @@ namespace RPG.Game.Engine.Factories
                         CurrentHitPoints = 5,
                         MaximumHitPoints = 5,
                         RewardExperiencePoints = 5,
-                        Gold = 1
-                    };
+                        Gold = 1,
+						DamageRoll = "1d2"
+					};
 
                     AddLootItem(rat, 9003, 25);
                     AddLootItem(rat, 9004, 75);
@@ -54,8 +56,9 @@ namespace RPG.Game.Engine.Factories
                         CurrentHitPoints = 10,
                         MaximumHitPoints = 10,
                         RewardExperiencePoints = 10,
-                        Gold = 3
-                    };
+                        Gold = 3,
+						DamageRoll = "1d4"
+					};
 
                     AddLootItem(giantSpider, 9005, 25);
                     AddLootItem(giantSpider, 9006, 75);

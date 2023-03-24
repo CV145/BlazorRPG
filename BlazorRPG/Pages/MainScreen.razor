@@ -9,12 +9,11 @@
 <Row Style="height: 60vh">
     <Column ColumnSize="ColumnSize.Is3.OnWidescreen.Is12" Style="background-color: aquamarine">
         <PlayerComponent Player="@ViewModel.CurrentPlayer"/>
-        <Button Color="Color.Secondary" Outline="true" Clicked="@ViewModel.AddXP">Add XP</Button>
     </Column>
     <Column ColumnSize="ColumnSize.Is9.OnWidescreen.Is12" Style="background-color: beige">
         <Row Margin="Margin.Is2.OnY">
             <Column ColumnSize="ColumnSize.Is9.OnWidescreen.Is12">
-                Game Data
+                <DisplayMessageListView MessageBoxes="@ViewModel.Messages" />
             </Column>
             <Column ColumnSize="ColumnSize.Is3.OnWidescreen.Is12" Style="height: 400px; overflow-y:scroll;">
                 <LocationComponent Location="@ViewModel.CurrentLocation" />
@@ -28,7 +27,9 @@
         <PlayerTabs Player="@ViewModel.CurrentPlayer"/>
     </Column>
     <Column ColumnSize="ColumnSize.Is5.OnWidescreen.Is12" Style="background-color: lavender">
-        Combat/Movement Controls
+        <CombatComponent WeaponList="@ViewModel.CurrentPlayer.Inventory.Weapons"
+                         AttackClicked="@ViewModel.AttackCurrentMonster"
+                         LocationHasMonster="@ViewModel.HasMonster" />
     </Column>
     <Column ColumnSize="ColumnSize.Is4.OnWidescreen.Is12" Style="background-color: lavender">
         <MovementComponent Movement="@ViewModel.Movement" LocationChanged="@ViewModel.OnLocationChanged" />
