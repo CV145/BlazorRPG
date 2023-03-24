@@ -19,5 +19,6 @@ namespace RPG.Game.Engine.Models
         public int Level { get; set; }
 
         public int Gold { get; set; }
+        public IList<GameItem> Inventory { get; } = new List<GameItem>();
     }
 }

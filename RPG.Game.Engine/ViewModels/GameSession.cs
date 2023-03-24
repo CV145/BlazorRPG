@@ -14,15 +14,17 @@ namespace RPG.Game.Engine.ViewModels
     {
         Player CurrentPlayer { get; }
         Location CurrentLocation { get; }
-        void AddXP();
+        MovementUnit Movement { get; }
+        void OnLocationChanged(Location newLocation);
     }
 
     //Current game state/instance
     public class GameSession : IGameSession
     {
-        public World CurrentWorld { get;private set; }
+        private readonly World _currentWorld;
         public Player CurrentPlayer { get; private set; }
         public Location CurrentLocation { get; private set; }
+        public MovementUnit Movement { get; private set; }
 
         public GameSession()
         {
@@ -36,9 +38,14 @@ namespace RPG.Game.Engine.ViewModels
 				Level = 1
 			};
 
-            this.CurrentWorld = WorldFactory.CreateWorld();
-            this.CurrentLocation = this.CurrentWorld.GetHomeLocation();
+            this._currentWorld = WorldFactory.CreateWorld();
+            this.Movement = new MovementUnit(this._currentWorld);
+            this.CurrentLocation = this.Movement.CurrentLocation;
+            CurrentPlayer.Inventory.Add(ItemFactory.CreateGameItem(1001));
         }
+
+        public void OnLocationChanged(Location newLocation) =>
+            this.CurrentLocation = newLocation;
 
         public void AddXP()
         {

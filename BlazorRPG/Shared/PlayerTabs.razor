@@ -1,0 +1,43 @@
+﻿<Tabs SelectedTab="@_selectedTab" Pills="true" SelectedTabChanged="OnSelectedTabChanged">
+    <Items>
+        <Tab Name="inventory">Inventory</Tab>
+        <Tab Name="quests">Quests</Tab>
+    </Items>
+    <Content>
+        <TabPanel Name="inventory">
+            <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                <Table Bordered="true" Hoverable="true" Narrow="true" Striped="true"
+                       Style="background-color: white">
+                    <TableHeader>
+                        <TableRowCell>Name</TableRowCell>
+                        <TableRowCell>Price</TableRowCell>
+                    </TableHeader>
+                    <TableBody>
+                        @foreach (var item in Player.Inventory)
+                        {
+                            <TableRow>
+                                <TableRowCell>@item.Name</TableRowCell>
+                                <TableRowCell>@item.Price</TableRowCell>
+                            </TableRow>
+                        }
+                    </TableBody>
+                </Table>
+            </div>
+        </TabPanel>
+        <TabPanel Name="quests">
+            coming soon...
+        </TabPanel>
+    </Content>
+</Tabs>
+
+@code {
+    private string _selectedTab = "inventory";
+
+    [Parameter] //databinding
+    public Player Player { get; set; } = new Player();
+
+    public void OnSelectedTabChanged(string newTab)
+    {
+        _selectedTab = newTab;
+    }
+}

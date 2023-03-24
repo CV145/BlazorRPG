@@ -19,7 +19,7 @@ namespace RPG.Game.Engine.Factories
                     YCoordinate = -1,
                     Name = "Farmer's Field",
                     Description = "There are rows of corn growing here, with giant rats hiding between them.",
-                    ImageName = "/images/locations/FarmFields.png"
+                    ImageName = "/images/locations/FarmFields.jpg"
                 },
                 new Location
                 {
@@ -27,7 +27,7 @@ namespace RPG.Game.Engine.Factories
                     YCoordinate = -1,
                     Name = "Farmer's House",
                     Description = "This is the house of your neighbor, Farmer Ted.",
-                    ImageName = "/images/locations/Farmhouse.png"
+                    ImageName = "/images/locations/Farmhouse.jpg"
                 },
                 new Location
                 {
@@ -35,7 +35,7 @@ namespace RPG.Game.Engine.Factories
                     YCoordinate = -1,
                     Name = "Home",
                     Description = "This is your home.",
-                    ImageName = "/images/locations/Home.png"
+                    ImageName = "/images/locations/Home.jpg"
                 },
                 new Location
                 {
@@ -43,7 +43,7 @@ namespace RPG.Game.Engine.Factories
                     YCoordinate = 0,
                     Name = "Trading Shop",
                     Description = "The shop of Susan, the trader.",
-                    ImageName = "/images/locations/Trader.png"
+                    ImageName = "/images/locations/Trader.jpg"
                 },
                 new Location
                 {
@@ -51,7 +51,7 @@ namespace RPG.Game.Engine.Factories
                     YCoordinate = 0,
                     Name = "Town Square",
                     Description = "You see a fountain here.",
-                    ImageName = "/images/locations/TownSquare.png"
+                    ImageName = "/images/locations/TownSquare.jpg"
                 },
                 new Location
                 {
@@ -59,7 +59,7 @@ namespace RPG.Game.Engine.Factories
                     YCoordinate = 0,
                     Name = "Town Gate",
                     Description = "There is a gate here, protecting the town from giant spiders.",
-                    ImageName = "/images/locations/TownGate.png"
+                    ImageName = "/images/locations/TownGate.jpg"
                 },
                 new Location
                 {
@@ -67,7 +67,7 @@ namespace RPG.Game.Engine.Factories
                     YCoordinate = 0,
                     Name = "Spider Forest",
                     Description = "The trees in this forest are covered with spider webs.",
-                    ImageName = "/images/locations/SpiderForest.png"
+                    ImageName = "/images/locations/SpiderForest.jpg"
                 },
                 new Location
                 {
@@ -75,7 +75,7 @@ namespace RPG.Game.Engine.Factories
                     YCoordinate = 1,
                     Name = "Herbalist's Hut",
                     Description = "You see a small hut, with plants drying from the roof.",
-                    ImageName = "/images/locations/HerbalistsHut.png"
+                    ImageName = "/images/locations/HerbalistsHut.jpg"
                 },
                 new Location
                 {
@@ -83,7 +83,7 @@ namespace RPG.Game.Engine.Factories
                     YCoordinate = 2,
                     Name = "Herbalist's Garden",
                     Description = "There are many plants here, with snakes hiding behind them.",
-                    ImageName = "/images/locations/HerbalistsGarden.png"
+                    ImageName = "/images/locations/HerbalistsGarden.jpg"
                 },
             };
 
