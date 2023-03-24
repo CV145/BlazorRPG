@@ -70,7 +70,7 @@ namespace RPG.Game.Engine.Factories
         {
             if (_service.Roll("1d100").Value <= percentage)
             {
-                monster.Inventory.AddItem(ItemFactory.CreateGameItem(itemID));
+                monster.Inventory.AddItem(item: ItemFactory.CreateGameItem(itemID));
             }
         }
     }

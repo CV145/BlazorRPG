@@ -5,9 +5,13 @@
 		<Figure>
 			<!--Figures are from Blazorise. Image followed by caption-->
 			<FigureImage Source="@Monster.ImageName"/>
-			<FigureCaption><strong>Current Hit Points:</strong>@Monster.CurrentHitPoints</FigureCaption>
+			<FigureCaption><strong>Current Hit Points: </strong>@Monster.CurrentHitPoints</FigureCaption>
 		</Figure>
 	</div>
+}
+else
+{
+	<div>No monster here</div>
 }
 
 @code {

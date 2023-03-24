@@ -48,13 +48,18 @@ namespace RPG.Game.Engine.ViewModels
             this._currentWorld = WorldFactory.CreateWorld();
             this.Movement = new MovementUnit(this._currentWorld);
             this.CurrentLocation = this.Movement.CurrentLocation;
-            CurrentPlayer.Inventory.AddItem(ItemFactory.CreateGameItem(1001));
+            GetMonsterAtCurrentLocation();
+
+            CurrentPlayer.Inventory.AddItem(item: ItemFactory.CreateGameItem(1001));
         }
 
-        public void OnLocationChanged(Location newLocation) =>
-            this.CurrentLocation = newLocation;
+		public void OnLocationChanged(Location newLocation)
+		{
+			CurrentLocation = newLocation;
+			GetMonsterAtCurrentLocation();
+		}
 
-        public void AddXP()
+		public void AddXP()
         {
             this.CurrentPlayer.ExperiencePoints += 10;
         }
