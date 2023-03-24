@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace RPG.Game.Engine.Models
 {
-    public class Player : LivingEntity
+    public class Monster : LivingEntity
     {
-        public string CharacterClass { get; set; } = string.Empty;
+        public string ImageName { get; set; } = string.Empty;
 
-        public int ExperiencePoints { get; set; }
+        public int RewardExperiencePoints { get; set; }
     }
 }

@@ -1,0 +1,21 @@
+﻿@if (Monster != null)
+{
+	<div style="border: 1px solid gainsboro; text-align: center">
+		<div>@Monster.Name</div>
+		<Figure>
+			<!--Figures are from Blazorise. Image followed by caption-->
+			<FigureImage Source="@Monster.ImageName"/>
+			<FigureCaption><strong>Current Hit Points:</strong>@Monster.CurrentHitPoints</FigureCaption>
+		</Figure>
+	</div>
+}
+
+@code {
+	[Parameter]
+	public Monster? Monster { get; set; }
+}
+
+<!--
+	Bootstrap:
+	Components are placed in a grid composed of 12 columns and rows
+-->

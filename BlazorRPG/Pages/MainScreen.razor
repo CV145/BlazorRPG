@@ -13,11 +13,12 @@
     </Column>
     <Column ColumnSize="ColumnSize.Is9.OnWidescreen.Is12" Style="background-color: beige">
         <Row Margin="Margin.Is2.OnY">
-            <Column ColumnSize="ColumnSize.Is8.OnWidescreen.Is12">
+            <Column ColumnSize="ColumnSize.Is9.OnWidescreen.Is12">
                 Game Data
             </Column>
-            <Column ColumnSize="ColumnSize.Is4.OnWidescreen.Is12">
+            <Column ColumnSize="ColumnSize.Is3.OnWidescreen.Is12">
                 <LocationComponent Location="@ViewModel.CurrentLocation" />
+                <MonsterComponent Monster="@ViewModel.CurrentMonster"/>
             </Column>
         </Row>
     </Column>
@@ -26,10 +27,10 @@
     <Column ColumnSize="ColumnSize.Is3.OnWidescreen.Is12" Style="background-color: burlywood">
         <PlayerTabs Player="@ViewModel.CurrentPlayer"/>
     </Column>
-    <Column ColumnSize="ColumnSize.Is9.OnWidescreen.Is12" Style="background-color: lavender">
+    <Column ColumnSize="ColumnSize.Is5.OnWidescreen.Is12" Style="background-color: lavender">
         Combat/Movement Controls
     </Column>
-    <Column ColumnSize="ColumnSize.Is4.OnWidescreen.Is12">
+    <Column ColumnSize="ColumnSize.Is4.OnWidescreen.Is12" Style="background-color: lavender">
         <MovementComponent Movement="@ViewModel.Movement" LocationChanged="@ViewModel.OnLocationChanged" />
     </Column>
 </Row>

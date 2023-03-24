@@ -14,6 +14,9 @@ namespace RPG.Game.Engine.ViewModels
     {
         Player CurrentPlayer { get; }
         Location CurrentLocation { get; }
+        Monster? CurrentMonster { get; }
+
+        bool HasMonster { get; }
         MovementUnit Movement { get; }
         void OnLocationChanged(Location newLocation);
     }
@@ -24,6 +27,9 @@ namespace RPG.Game.Engine.ViewModels
         private readonly World _currentWorld;
         public Player CurrentPlayer { get; private set; }
         public Location CurrentLocation { get; private set; }
+        public Monster? CurrentMonster { get; private set; }
+
+        public bool HasMonster => CurrentMonster != null;
         public MovementUnit Movement { get; private set; }
 
         public GameSession()
@@ -32,7 +38,8 @@ namespace RPG.Game.Engine.ViewModels
 			{
 				Name = "Flynn",
 				CharacterClass = "Samurai",
-				HitPoints = 10,
+				CurrentHitPoints = 10,
+                MaximumHitPoints = 10,
 				Gold = 1000,
 				ExperiencePoints = 0,
 				Level = 1
@@ -41,7 +48,7 @@ namespace RPG.Game.Engine.ViewModels
             this._currentWorld = WorldFactory.CreateWorld();
             this.Movement = new MovementUnit(this._currentWorld);
             this.CurrentLocation = this.Movement.CurrentLocation;
-            CurrentPlayer.Inventory.Add(ItemFactory.CreateGameItem(1001));
+            CurrentPlayer.Inventory.AddItem(ItemFactory.CreateGameItem(1001));
         }
 
         public void OnLocationChanged(Location newLocation) =>
@@ -51,5 +58,8 @@ namespace RPG.Game.Engine.ViewModels
         {
             this.CurrentPlayer.ExperiencePoints += 10;
         }
+
+        private void GetMonsterAtCurrentLocation() =>
+            CurrentMonster = CurrentLocation.HasMonster() ? CurrentLocation.GetMonster() : null;
     }
 }
