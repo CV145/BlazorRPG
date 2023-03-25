@@ -10,8 +10,6 @@ namespace RPG.Game.Engine.Factories
 {
     internal static class MonsterFactory
     {
-        private static readonly IDiceService _service = DiceService.Instance;
-
         public static Monster GetMonster(int monsterID)
         {
             switch (monsterID)
@@ -25,7 +23,7 @@ namespace RPG.Game.Engine.Factories
                         MaximumHitPoints = 4,
                         RewardExperiencePoints = 5,
                         Gold = 1,
-                        DamageRoll = "1d2"
+                        DamageRoll = 2
                     };
 
                     AddLootItem(snake, 9001, 25);
@@ -41,7 +39,7 @@ namespace RPG.Game.Engine.Factories
                         MaximumHitPoints = 5,
                         RewardExperiencePoints = 5,
                         Gold = 1,
-						DamageRoll = "1d2"
+                        DamageRoll = 2
 					};
 
                     AddLootItem(rat, 9003, 25);
@@ -57,7 +55,7 @@ namespace RPG.Game.Engine.Factories
                         MaximumHitPoints = 10,
                         RewardExperiencePoints = 10,
                         Gold = 3,
-						DamageRoll = "1d4"
+						DamageRoll = 4
 					};
 
                     AddLootItem(giantSpider, 9005, 25);
@@ -71,7 +69,7 @@ namespace RPG.Game.Engine.Factories
 
         private static void AddLootItem(Monster monster, int itemID, int percentage)
         {
-            if (_service.Roll("1d100").Value <= percentage)
+            if (DiceService.rollD(100) <= percentage)
             {
                 monster.Inventory.AddItem(item: ItemFactory.CreateGameItem(itemID));
             }

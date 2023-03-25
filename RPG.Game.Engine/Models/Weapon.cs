@@ -8,13 +8,13 @@ namespace RPG.Game.Engine.Models
 {
     public class Weapon : GameItem
     {
-        public Weapon(int itemTypeID, string name, int price, string damageRoll)
+        public Weapon(int itemTypeID, string name, int price, int damageRoll)
             : base(itemTypeID, name, price, true)
         {
             damageRoll = damageRoll;
         }
 
-        public string DamageRoll { get; set; } = string.Empty;
+        public int DamageRoll { get; set; } 
 
         public override GameItem Clone() =>
             new Weapon(ItemTypeID, Name, Price, DamageRoll);

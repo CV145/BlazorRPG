@@ -11,47 +11,16 @@ namespace RPG.Game.Engine.Services
     /*
      * Offers dice rolling services as a singleton (one instance only)
      */
-    public class DiceService : IDiceService
+    public static class DiceService
     {
-        private static readonly IDiceService _instance = new DiceService();
-
-        /// <summary>
-        /// Make constructor private to implement singletone pattern.
-        /// </summary>
-        private DiceService()
+        public static int rollD(int amount)
         {
+            Console.WriteLine("rolling dice");
+            Random random = new Random();
+            int result = random.Next(1, amount+1);
+            Console.WriteLine(result);
+            Console.WriteLine("dice rolled");
+            return result;
         }
-
-        /// <summary>
-        /// Static singleton property
-        /// </summary>
-        public static IDiceService Instance => _instance;
-
-        //--- IDiceService implementation
-
-        public IDice Dice { get; } = new Dice();
-
-        public IDieRoller DieRoller { get; private set; } = new RandomDieRoller();
-
-        public IDiceConfiguration Configuration => Dice.Configuration;
-
-        public IDieRollTracker? RollTracker { get; private set; } = null;
-
-        public void Configure(IDiceService.RollerType rollerType, bool enableTracker = false)
-        {
-            RollTracker = enableTracker ? new DieRollTracker() : null;
-
-            DieRoller = rollerType switch
-            {
-                IDiceService.RollerType.Random => new RandomDieRoller(RollTracker),
-                IDiceService.RollerType.Crypto => new CryptoDieRoller(RollTracker),
-                IDiceService.RollerType.MathNet => new MathNetDieRoller(RollTracker),
-                _ => throw new ArgumentOutOfRangeException(nameof(rollerType)),
-            };
-        }
-
-        public DiceResult Roll() => Dice.Roll(DieRoller);
-
-        public DiceResult Roll(string diceNotation) => Dice.Roll(diceNotation, DieRoller);
     }
 }

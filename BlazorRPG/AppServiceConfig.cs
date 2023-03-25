@@ -9,7 +9,7 @@ namespace BlazorRPG
         {
             // add app-specific/custom services here...
             services.AddSingleton<GameSession>();
-            services.AddSingleton<IDiceService>(DiceService.Instance);
+            //services.AddSingleton<IDiceService>(DiceService.Instance);
             services.AddTransient<TraderViewModel>();
         }
 

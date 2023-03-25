@@ -19,6 +19,7 @@ namespace RPG.Game.Engine.Models
         public string Description { get; set; } = string.Empty;
 
         public string ImageName { get; set; } = string.Empty;
+        public IList<Quest> QuestsAvailableHere { get; set; } = new List<Quest>();
         public IList<MonsterEncounter> MonstersHere { get; set; } = new List<MonsterEncounter>();
 
         public Trader? TraderHere { get; set; } = null;
@@ -54,7 +55,7 @@ namespace RPG.Game.Engine.Models
             int totalChances = MonstersHere.Sum(m => m.ChanceOfEncountering);
 
             // Select a random number between 1 and the total (in case the total chances is not 100).
-            var result = DiceService.Instance.Roll(totalChances.ToString());
+            var result = DiceService.rollD(totalChances);
 
             // loop through the monster list, 
             // adding the monster's percentage chance of appearing to the runningTotal variable.
@@ -65,7 +66,7 @@ namespace RPG.Game.Engine.Models
             {
                 runningTotal += monsterEncounter.ChanceOfEncountering;
 
-                if (result.Value <= runningTotal)
+                if (result <= runningTotal)
                 {
                     return MonsterFactory.GetMonster(monsterEncounter.MonsterId);
                 }

@@ -76,5 +76,10 @@ namespace RPG.Game.Engine.Models
                 }
             }
         }
+
+        public bool HasAllTheseItems(IEnumerable<ItemQuantity> items)
+        {
+            return items.All(item => Items.Count(i => i.ItemTypeID == item.ItemID) >= item.Quantity);
+        }
     }
 }
