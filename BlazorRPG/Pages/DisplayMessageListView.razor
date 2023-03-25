@@ -1,8 +1,8 @@
 <h3>Game Messages:</h3>
-<div style="height: 800px; overflow-y:scroll;">
+<div style="height: 400px; overflow-y:scroll;">
 	@foreach (MessageBox box in MessageBoxes)
 	{
-		<h1>@box.Title</h1>
+		<h5>@box.Title</h5>
 		<ul>
 		@foreach (string msg in box.Messages)
 		{

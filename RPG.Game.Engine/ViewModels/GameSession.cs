@@ -18,6 +18,7 @@ namespace RPG.Game.Engine.ViewModels
         Monster? CurrentMonster { get; }
 
         bool HasMonster { get; }
+		Trader? CurrentTrader { get; }
         MovementUnit Movement { get; }
         void OnLocationChanged(Location newLocation);
         void AttackCurrentMonster(Weapon? currentWeapon);
@@ -35,6 +36,7 @@ namespace RPG.Game.Engine.ViewModels
         public Monster? CurrentMonster { get; private set; }
 
         public bool HasMonster => CurrentMonster != null;
+        public Trader? CurrentTrader { get; private set; }
         public MovementUnit Movement { get; private set; }
 
 		public IList<MessageBox> Messages { get; } = new List<MessageBox>();
@@ -69,16 +71,22 @@ namespace RPG.Game.Engine.ViewModels
 			}
         }
 
-		public void OnLocationChanged(Location newLocation)
-		{
-			CurrentLocation = newLocation;
-			GetMonsterAtCurrentLocation();
-		}
+        public void OnLocationChanged(Location newLocation)
+        {
+            _ = newLocation ?? throw new ArgumentNullException(nameof(newLocation));
 
-		public void AttackCurrentMonster(Weapon? currentWeapon)
+            CurrentLocation = newLocation;
+            Movement.UpdateLocation(CurrentLocation);
+            GetMonsterAtCurrentLocation();
+            CurrentTrader = CurrentLocation.TraderHere;
+        }
+
+        public void AttackCurrentMonster(Weapon? currentWeapon)
 		{
+			Console.WriteLine("Attacking current monster");
 			if (CurrentMonster is null)
 			{
+				AddDisplayMessage("Error", "Current monster is null");
 				return;
 			}
 
@@ -165,6 +173,7 @@ namespace RPG.Game.Engine.ViewModels
 
 		private void AddDisplayMessage(string title, IList<string> messages)
 		{
+			Console.WriteLine(title + ": " + messages.Count);
 			var message = new MessageBox(title, messages);
 			this.Messages.Insert(0, message);
 

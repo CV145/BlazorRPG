@@ -36,6 +36,7 @@
 
     public void OnAttackClicked()
     {
+        Console.WriteLine("Attack clicked");
         var weapon = selectedWeaponId > 0 ? WeaponList.First(f => f.ItemTypeID == selectedWeaponId) : null;
         AttackClicked.InvokeAsync(weapon as Weapon);
     }

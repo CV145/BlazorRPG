@@ -1,4 +1,5 @@
-﻿using RPG.Game.Engine.ViewModels;
+﻿using RPG.Game.Engine.Services;
+using RPG.Game.Engine.ViewModels;
 
 namespace BlazorRPG
 {
@@ -8,6 +9,8 @@ namespace BlazorRPG
         {
             // add app-specific/custom services here...
             services.AddSingleton<GameSession>();
+            services.AddSingleton<IDiceService>(DiceService.Instance);
+            services.AddTransient<TraderViewModel>();
         }
 
         public static void InitializeAppServices(IServiceProvider serviceProvider)

@@ -22,6 +22,11 @@ namespace RPG.Game.Engine.ViewModels
 
         public EventCallback<Location> LocationChanged { get; set; }
 
+        public void UpdateLocation(Location newLocation)
+        {
+            CurrentLocation = newLocation;
+        }
+
         public bool CanMoveNorth =>
             this.world.HasLocationAt(this.CurrentLocation.XCoordinate, this.CurrentLocation.YCoordinate + 1);
 
