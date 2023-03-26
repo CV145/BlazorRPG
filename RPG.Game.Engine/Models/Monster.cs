@@ -11,6 +11,5 @@ namespace RPG.Game.Engine.Models
         public string ImageName { get; set; } = string.Empty;
 
         public int RewardExperiencePoints { get; set; }
-        public int DamageRoll { get; set; } 
     }
 }

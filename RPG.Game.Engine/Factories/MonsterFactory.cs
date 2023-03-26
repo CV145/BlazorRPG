@@ -23,9 +23,9 @@ namespace RPG.Game.Engine.Factories
                         MaximumHitPoints = 4,
                         RewardExperiencePoints = 5,
                         Gold = 1,
-                        DamageRoll = 2
                     };
 
+                    snake.CurrentWeapon = ItemFactory.CreateGameItem(1501);
                     AddLootItem(snake, 9001, 25);
                     AddLootItem(snake, 9002, 75);
                     return snake;
@@ -39,9 +39,9 @@ namespace RPG.Game.Engine.Factories
                         MaximumHitPoints = 5,
                         RewardExperiencePoints = 5,
                         Gold = 1,
-                        DamageRoll = 2
 					};
 
+                    rat.CurrentWeapon = ItemFactory.CreateGameItem(1502);
                     AddLootItem(rat, 9003, 25);
                     AddLootItem(rat, 9004, 75);
                     return rat;
@@ -55,9 +55,9 @@ namespace RPG.Game.Engine.Factories
                         MaximumHitPoints = 10,
                         RewardExperiencePoints = 10,
                         Gold = 3,
-						DamageRoll = 4
 					};
 
+                    giantSpider.CurrentWeapon = ItemFactory.CreateGameItem(1503);
                     AddLootItem(giantSpider, 9005, 25);
                     AddLootItem(giantSpider, 9006, 75);
                     return giantSpider;

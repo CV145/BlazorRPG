@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 
 //View <-> ViewModel <-> Model
 
+//Contains game session data for UI
+
 namespace RPG.Game.Engine.ViewModels
 {
     public interface IGameSession
@@ -21,7 +23,7 @@ namespace RPG.Game.Engine.ViewModels
 		Trader? CurrentTrader { get; }
         MovementUnit Movement { get; }
         void OnLocationChanged(Location newLocation);
-        void AttackCurrentMonster(Weapon? currentWeapon);
+        void AttackCurrentMonster(GameItem? currentWeapon);
     }
 
     //Current game state/instance
@@ -82,7 +84,7 @@ namespace RPG.Game.Engine.ViewModels
             CurrentTrader = CurrentLocation.TraderHere;
         }
 
-        public void AttackCurrentMonster(Weapon? currentWeapon)
+        public void AttackCurrentMonster(GameItem? currentWeapon)
 		{
 			Console.WriteLine("Attacking current monster");
 			if (CurrentMonster is null)
@@ -97,42 +99,15 @@ namespace RPG.Game.Engine.ViewModels
 				return;
 			}
 
-			Console.WriteLine("about to roll...");
-
-			// Determine damage to monster
-			int damageToMonster = DiceService.rollD(currentWeapon.DamageRoll);
-
-			Console.WriteLine(damageToMonster);
-
-			if (damageToMonster == 0)
-			{
-				AddDisplayMessage("Player Combat", $"You missed the {CurrentMonster.Name}.");
-			}
-			else
-			{
-				CurrentMonster.CurrentHitPoints -= damageToMonster;
-				AddDisplayMessage("Player Combat", $"You hit the {CurrentMonster.Name} for {damageToMonster} points.");
-			}
+            //act against monster with weapon
+            CurrentPlayer.CurrentWeapon = currentWeapon;
+			var message = CurrentPlayer.UseCurrentWeaponOn(CurrentMonster);
+			AddDisplayMessage(message);
 
 			// If monster if killed, collect rewards and loot
-			if (CurrentMonster.CurrentHitPoints <= 0)
+			if (CurrentMonster.IsDead)
 			{
-				var messageLines = new List<string>();
-				messageLines.Add($"You defeated the {CurrentMonster.Name}!");
-
-				CurrentPlayer.ExperiencePoints += CurrentMonster.RewardExperiencePoints;
-				messageLines.Add($"You receive {CurrentMonster.RewardExperiencePoints} experience points.");
-
-				CurrentPlayer.Gold += CurrentMonster.Gold;
-				messageLines.Add($"You receive {CurrentMonster.Gold} gold.");
-
-				foreach (GameItem item in CurrentMonster.Inventory.Items)
-				{
-					CurrentPlayer.Inventory.AddItem(item);
-					messageLines.Add($"You received {item.Name}.");
-				}
-
-				AddDisplayMessage("Monster Defeated", messageLines);
+                OnCurrentMonsterKilled(CurrentMonster);
 
 				// Get another monster to fight
 				GetMonsterAtCurrentLocation();
@@ -140,30 +115,46 @@ namespace RPG.Game.Engine.ViewModels
 			else
 			{
 				// If monster is still alive, let the monster attack
-				int damageToPlayer = DiceService.rollD(CurrentMonster.DamageRoll);
+				message = CurrentMonster.UseCurrentWeaponOn(CurrentPlayer);
+                AddDisplayMessage(message);
 
-				if (damageToPlayer == 0)
+				if (CurrentPlayer.IsDead)
 				{
-					AddDisplayMessage("Monster Combat", "The monster attacks, but misses you.");
-				}
-				else
-				{
-					CurrentPlayer.CurrentHitPoints -= damageToPlayer;
-					AddDisplayMessage("Monster Combat", $"The {CurrentMonster.Name} hit you for {damageToPlayer} points.");
-				}
-
-				// If player is killed, move them back to their home.
-				if (CurrentPlayer.CurrentHitPoints <= 0)
-				{
-					AddDisplayMessage("Player Defeated", $"The {CurrentMonster.Name} killed you.");
-
-					CurrentPlayer.CurrentHitPoints = CurrentPlayer.MaximumHitPoints; // Completely heal the player
-					this.OnLocationChanged(_currentWorld.LocationAt(0, -1)); // Return to Player's home
+                    OnCurrentPlayerKilled(CurrentMonster);
 				}
 			}
 		}
 
-		private void GetMonsterAtCurrentLocation()
+        private void OnCurrentPlayerKilled(Monster currentMonster)
+        {
+            AddDisplayMessage("Player Defeated", $"The {currentMonster.Name} killed you.");
+
+            CurrentPlayer.CompletelyHeal();  // Completely heal the player
+            this.OnLocationChanged(_currentWorld.LocationAt(0, -1));  // Return to Player's home
+        }
+
+        private void OnCurrentMonsterKilled(Monster currentMonster)
+        {
+            var messageLines = new List<string>();
+            messageLines.Add($"You defeated the {currentMonster.Name}!");
+
+            CurrentPlayer.AddExperience(currentMonster.RewardExperiencePoints);
+            messageLines.Add($"You receive {currentMonster.RewardExperiencePoints} experience points.");
+
+            CurrentPlayer.ReceiveGold(currentMonster.Gold);
+            messageLines.Add($"You receive {currentMonster.Gold} gold.");
+
+            foreach (GameItem item in currentMonster.Inventory.Items)
+            {
+                CurrentPlayer.Inventory.AddItem(item);
+                messageLines.Add($"You received {item.Name}.");
+            }
+
+            AddDisplayMessage("Monster Defeated", messageLines);
+        }
+
+
+        private void GetMonsterAtCurrentLocation()
 		{
 			CurrentMonster = CurrentLocation.HasMonster() ? CurrentLocation.GetMonster() : null;
 
@@ -230,10 +221,10 @@ namespace RPG.Game.Engine.ViewModels
 
                         // give the player the quest rewards
                         var messageLines = new List<string>();
-                        CurrentPlayer.ExperiencePoints += quest.RewardExperiencePoints;
+						CurrentPlayer.AddExperience(quest.RewardExperiencePoints);
                         messageLines.Add($"You receive {quest.RewardExperiencePoints} experience points");
 
-                        CurrentPlayer.Gold += quest.RewardGold;
+						CurrentPlayer.ReceiveGold(quest.RewardGold);
                         messageLines.Add($"You receive {quest.RewardGold} gold");
 
                         foreach (ItemQuantity itemQuantity in quest.RewardItems)
@@ -267,5 +258,15 @@ namespace RPG.Game.Engine.ViewModels
 				Messages.Remove(Messages.Last());
 			}
 		}
-	}
+
+        private void AddDisplayMessage(MessageBox message)
+        {
+            this.Messages.Insert(0, message);
+
+            if (Messages.Count > _maximumMessagesCount)
+            {
+                Messages.Remove(Messages.Last());
+            }
+        }
+    }
 }

@@ -15,5 +15,11 @@ namespace RPG.Game.Engine.Models
 			Title = title;
 			Messages = messages;
 		}
-	}
+
+        public MessageBox(string title, string message)
+        {
+            Title = title;
+            Messages = new List<string> { message };
+        }
+    }
 }

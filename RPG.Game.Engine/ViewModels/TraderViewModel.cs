@@ -24,7 +24,7 @@ namespace RPG.Game.Engine.ViewModels
 
             if (Player != null && Trader != null)
             {
-                Player.Gold += item.Price;
+                Player.ReceiveGold(item.Price);
                 Trader.Inventory.AddItem(item);
                 Player.Inventory.RemoveItem(item);
 
@@ -41,7 +41,7 @@ namespace RPG.Game.Engine.ViewModels
                 ErrorMessage = string.Empty;
                 if (Player.Gold >= item.Price)
                 {
-                    Player.Gold -= item.Price;
+                    Player.SpendGold(item.Price);
                     Trader.Inventory.RemoveItem(item);
                     Player.Inventory.AddItem(item);
 
