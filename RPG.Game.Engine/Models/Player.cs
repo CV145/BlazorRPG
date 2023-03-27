@@ -12,6 +12,7 @@ namespace RPG.Game.Engine.Models
 
         public int ExperiencePoints { get; set; }
         public IList<QuestStatus> Quests { get; set; } = new List<QuestStatus>();
+        public IList<Recipe> Recipes { get; set;} = new List<Recipe>();
         public void AddExperience(int experiencePoints)
         {
             if (experiencePoints > 0)
@@ -30,6 +31,14 @@ namespace RPG.Game.Engine.Models
             if (Level != originalLevel)
             {
                 MaximumHitPoints = Level * 10;
+            }
+        }
+
+        public void LearnRecipe(Recipe recipe)
+        {
+            if (!Recipes.Any(r => r.Id == recipe.Id))
+            {
+                Recipes.Add(recipe);
             }
         }
     }

@@ -10,18 +10,40 @@
     </Column>
     <Column ColumnSize="ColumnSize.Is2">
         <Button id="attack-monster-btn" Color="Color.Secondary" Margin="Margin.Is1"
-                Disabled="@disableAttack" Clicked="OnAttackClicked">
+                Disabled="@disableAttack" Clicked="OnAttackClicked" accesskey="k">
             Attack!
+        </Button>
+    </Column>
+</Row>
+<Row Margin="Margin.Is2.OnY">
+    <Column ColumnSize="ColumnSize.Is6.Is2.WithOffset" Margin="Margin.Is1.FromTop">
+        <Select id="consumables-select" TValue="int" @bind-SelectedValue="SelectedConsumableId">
+            @foreach (GameItem item in ConsumableList)
+            {
+                <SelectItem TValue="int" Value="@item.ItemTypeID">@item.Name</SelectItem>
+            }
+        </Select>
+    </Column>
+    <Column ColumnSize="ColumnSize.Is2">
+        <Button id="use-consumable-btn" Color="Color.Secondary" Margin="Margin.Is1"
+                Disabled="@disableUse" Clicked="OnConsumeClicked" accesskey="u">
+            Use!
         </Button>
     </Column>
 </Row>
 
 @code {
     private bool disableAttack => !WeaponList.Any() || LocationHasMonster == false;
+    private bool disableUse => !ConsumableList.Any(); //If there are none
     private int selectedWeaponId;
+    private int SelectedConsumableId { get; set; }
 
+    //Filled out in the implementing component
     [Parameter]
     public IEnumerable<GameItem> WeaponList { get; set; } = Array.Empty<GameItem>();
+
+    [Parameter]
+    public IEnumerable<GameItem> ConsumableList { get; set; } = Array.Empty<GameItem>();
 
     [Parameter]
     public bool LocationHasMonster { get; set; } = false;
@@ -29,9 +51,13 @@
     [Parameter]
     public EventCallback<GameItem?> AttackClicked { get; set; }
 
+    [Parameter]
+    public EventCallback<GameItem?> ConsumeClicked { get; set; }
+
     protected override void OnInitialized()
     {
         selectedWeaponId = WeaponList.Any() ? WeaponList.First().ItemTypeID : 0;
+        SelectedConsumableId = ConsumableList.Any() ? ConsumableList.First().ItemTypeID : 0;
     }
 
     public void OnAttackClicked()
@@ -39,5 +65,11 @@
         Console.WriteLine("Attack clicked");
         var weapon = selectedWeaponId > 0 ? WeaponList.First(f => f.ItemTypeID == selectedWeaponId) : null;
         AttackClicked.InvokeAsync(weapon);
+    }
+
+    public void OnConsumeClicked()
+    {
+        var item = SelectedConsumableId > 0 ? ConsumableList.First(f => f.ItemTypeID == SelectedConsumableId) : null;
+        ConsumeClicked.InvokeAsync(item);
     }
 }

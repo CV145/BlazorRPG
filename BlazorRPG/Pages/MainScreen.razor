@@ -1,47 +1,70 @@
 ﻿@page "/"
+@inject IJSRuntime jsRuntime //service that lets us interact with javascript methods
 @inject GameSession ViewModel //dependency-injection-
 
-<Row Style="height: 5vh; min-height: 32px">
-    <Column ColumnSize="ColumnSize.Is12" Style="background-color: aliceblue">
-        <Heading Size="HeadingSize.Is3">Simple RPG</Heading>
-    </Column>
-</Row>
-<Row Style="height: 60vh">
-    <Column ColumnSize="ColumnSize.Is3.OnWidescreen.Is12" Style="background-color: aquamarine">
-        <PlayerComponent Player="@ViewModel.CurrentPlayer"/>
-    </Column>
-    <Column ColumnSize="ColumnSize.Is9.OnWidescreen.Is12" Style="background-color: beige">
-        <Row Margin="Margin.Is2.OnY">
-            <Column ColumnSize="ColumnSize.Is9.OnWidescreen.Is12">
-                <DisplayMessageListView MessageBoxes="@ViewModel.Messages" />
-            </Column>
-            <Column ColumnSize="ColumnSize.Is3.OnWidescreen.Is12" Style="height: 400px; overflow-y:scroll;">
-                <LocationComponent Location="@ViewModel.CurrentLocation" />
-                <MonsterComponent Monster="@ViewModel.CurrentMonster"/>
-                <TraderComponent Trader="@ViewModel.CurrentTrader" Player="@ViewModel.CurrentPlayer"
-                                 InventoryChanged="@OnInventoryChanged" />
-            </Column>
-        </Row>
-    </Column>
-</Row>
-<Row Style="height: 30vh">
-    <Column ColumnSize="ColumnSize.Is3.OnWidescreen.Is12" Style="background-color: burlywood">
-        <PlayerTabs Player="@ViewModel.CurrentPlayer"/>
-    </Column>
-    <Column ColumnSize="ColumnSize.Is5.OnWidescreen.Is12" Style="background-color: lavender">
-        <CombatComponent WeaponList="@ViewModel.CurrentPlayer.Inventory.Weapons"
-                         AttackClicked="@ViewModel.AttackCurrentMonster"
-                         LocationHasMonster="@ViewModel.HasMonster" />
-    </Column>
-    <Column ColumnSize="ColumnSize.Is4.OnWidescreen.Is12" Style="background-color: lavender">
-        <MovementComponent Movement="@ViewModel.Movement" LocationChanged="@ViewModel.OnLocationChanged" />
-    </Column>
-</Row>
+<div @onkeydown="@KeyDown" tabindex="0" @ref="pageRoot">
+    <Row Style="height: 5vh; min-height: 32px">
+        <Column ColumnSize="ColumnSize.Is12" Style="background-color: aliceblue">
+            <Heading Size="HeadingSize.Is3">Simple RPG</Heading>
+        </Column>
+    </Row>
+    <Row Style="height: 60vh">
+        <Column ColumnSize="ColumnSize.Is3.OnWidescreen.Is12" Style="background-color: aquamarine">
+            <PlayerComponent Player="@ViewModel.CurrentPlayer" />
+        </Column>
+        <Column ColumnSize="ColumnSize.Is9.OnWidescreen.Is12" Style="background-color: beige">
+            <Row Margin="Margin.Is2.OnY">
+                <Column ColumnSize="ColumnSize.Is9.OnWidescreen.Is12">
+                    <DisplayMessageListView MessageBoxes="@ViewModel.Messages" />
+                </Column>
+                <Column ColumnSize="ColumnSize.Is3.OnWidescreen.Is12" Style="height: 400px; overflow-y:scroll;">
+                    <LocationComponent Location="@ViewModel.CurrentLocation" />
+                    <MonsterComponent Monster="@ViewModel.CurrentMonster" />
+                    <TraderComponent Trader="@ViewModel.CurrentTrader" Player="@ViewModel.CurrentPlayer"
+                                     InventoryChanged="@StateHasChanged" />
+                </Column>
+            </Row>
+        </Column>
+    </Row>
+    <Row Style="height: 30vh">
+        <Column ColumnSize="ColumnSize.Is3.OnWidescreen.Is12" Style="background-color: burlywood">
+
+            <PlayerTabs Player="@ViewModel.CurrentPlayer" CraftItemClicked="@ViewModel.CraftItem" DisplayMessageCreated="@ViewModel.AddDisplayMessage" />
+        </Column>
+        <Column ColumnSize="ColumnSize.Is5.OnWidescreen.Is12" Style="background-color: lavender">
+            <CombatComponent WeaponList="@ViewModel.CurrentPlayer.Inventory.Weapons"
+                             AttackClicked="@ViewModel.AttackCurrentMonster"
+                             LocationHasMonster="@ViewModel.HasMonster"
+                             ConsumableList="@ViewModel.CurrentPlayer.Inventory.Consumables"
+                             ConsumeClicked="@ViewModel.ConsumeCurrentItem" />
+        </Column>
+        <Column ColumnSize="ColumnSize.Is4.OnWidescreen.Is12" Style="background-color: lavender">
+            <MovementComponent Movement="@ViewModel.Movement" LocationChanged="@ViewModel.OnLocationChanged" />
+        </Column>
+    </Row>
+</div>
+
 
 @code {
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    private void OnInventoryChanged()
+    //reference to page root @ref
+    protected ElementReference pageRoot; 
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
     {
-        StateHasChanged();
+        if (firstRender)
+        {
+            //Call JS runtime method to focus on the page root
+            await jsRuntime.InvokeVoidAsync("SetFocusToElement", pageRoot);
+        }
     }
+
+    protected override void OnInitialized()
+    {
+        MessageBoxBroker.Instance.OnMessageRaised += OnGameMessageRaised;
+    }
+
+    //Process keyboard events
+    protected void KeyDown(KeyboardEventArgs args) => ViewModel.ProcessKeyPress(args.ToKeyProcessingEventArgs());
+
+    private void OnGameMessageRaised(object sender, MessageBox message) => ViewModel.AddDisplayMessage(message);
 }

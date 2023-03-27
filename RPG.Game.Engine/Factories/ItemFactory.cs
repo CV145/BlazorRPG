@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace RPG.Game.Engine.Factories
 {
+    //All game items created here
      internal static class ItemFactory
     {
         private static List<GameItem> _standardGameItems = new List<GameItem>();
@@ -21,7 +22,10 @@ namespace RPG.Game.Engine.Factories
             BuildWeapon(1502, "Rat claws", 0, 2);
             BuildWeapon(1503, "Spider fangs", 0, 4);
 
-            BuildHealingItem(2001, "Granola bar", 5, 2)
+            BuildHealingItem(2001, "Granola bar", 5, 2);
+            BuildMiscellaneousItem(3001, "Oats", 1);
+            BuildMiscellaneousItem(3002, "Honey", 2);
+            BuildMiscellaneousItem(3003, "Raisins", 2);
 
             BuildMiscellaneousItem(9001, "Snake fang", 1);
             BuildMiscellaneousItem(9002, "Snakeskin", 2);
@@ -36,6 +40,12 @@ namespace RPG.Game.Engine.Factories
         {
             var standardItem = _standardGameItems.FirstOrDefault(i => i.ItemTypeID == itemTypeID);
             return standardItem?.Clone();
+        }
+
+        //Get the first item that matches given ID or "" if null
+        public static string GetItemName(int itemTypeId)
+        {
+            return _standardGameItems.FirstOrDefault(i => i.ItemTypeID == itemTypeId)?.Name ?? "";
         }
 
         private static void BuildMiscellaneousItem(int id, string name, int price)

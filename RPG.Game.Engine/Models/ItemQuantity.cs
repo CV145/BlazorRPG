@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RPG.Game.Engine.Factories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,5 +11,6 @@ namespace RPG.Game.Engine.Models
     {
         public int ItemID { get; set; }
         public int Quantity { get; set; }
+        public string QuantityItemDescription => $"{ItemFactory.GetItemName(ItemID)} (x{Quantity})";
     }
 }

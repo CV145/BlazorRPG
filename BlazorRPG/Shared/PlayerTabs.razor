@@ -2,6 +2,7 @@
     <Items>
         <Tab Name="inventory">Inventory</Tab>
         <Tab Name="quests">Quests</Tab>
+        <Tab Name="recipes">Recipes</Tab>
     </Items>
     <Content>
         <TabPanel Name="inventory">
@@ -38,9 +39,39 @@
                         @foreach (var quest in Player.Quests)
                         {
                             <TableRow>
-                                <TableRowCell>@quest.PlayerQuest.Name</TableRowCell>
+                                <TableRowCell id="quest-name-cell" Style="cursor:pointer" Clicked="() => OnQuestClicked(quest.PlayerQuest)">
+                                    @quest.PlayerQuest.Name
+                                </TableRowCell>
                                 <TableRowCell>@(quest.IsCompleted ? "Yes" : "No")</TableRowCell>
                                 </TableRow>
+                        }
+                    </TableBody>
+                </Table>
+            </div>
+        </TabPanel>
+        <TabPanel Name="recipes">
+            <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                <Table Bordered="true" Hoverable="true" Narrow="true" Striped="true"
+                       Style="background-color: white">
+                    <TableHeader>
+                        <TableRowCell>Name</TableRowCell>
+                        <TableRowCell></TableRowCell>
+                    </TableHeader>
+                    <TableBody>
+                        @foreach (var recipe in Player.Recipes)
+                        {
+                            <TableRow>
+                                <TableRowCell id="recipe-name-cell" Style="cursor: pointer" Clicked="() => OnRecipeClicked(recipe)">
+                                    @recipe.Name
+                                </TableRowCell>
+                                <TableRowCell>@recipe.Name</TableRowCell>
+                                <TableRowCell>
+                                    <Button id="craft-item-btn" Size="ButtonSize.Small" Color="Color.Secondary"
+                                        Outline="true" Clicked="() => CraftItemClicked.InvokeAsync(recipe)">
+                                        Craft
+                                    </Button>
+                                </TableRowCell>
+                            </TableRow>
                         }
                     </TableBody>
                 </Table>
@@ -52,11 +83,24 @@
 @code {
     private string _selectedTab = "inventory";
 
+    //These params show up in the component that uses this component
     [Parameter] //databinding
     public Player Player { get; set; } = new Player();
+
+    [Parameter]
+    public EventCallback<Recipe> CraftItemClicked { get; set; }
+
+    [Parameter]
+    public EventCallback<MessageBox> DisplayMessageCreated { get; set; }
 
     public void OnSelectedTabChanged(string newTab)
     {
         _selectedTab = newTab;
     }
+
+    private void OnQuestClicked(Quest quest) =>
+        DisplayMessageCreated.InvokeAsync(quest.ToDisplayMessage());
+
+    private void OnRecipeClicked(Recipe recipe) =>
+        DisplayMessageCreated.InvokeAsync(recipe.ToDisplayMessage());
 }

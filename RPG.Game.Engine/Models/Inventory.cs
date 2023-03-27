@@ -85,6 +85,19 @@ namespace RPG.Game.Engine.Models
             }
         }
 
+        public void RemoveItems(IList<ItemQuantity> itemQuantities)
+        {
+            _ = itemQuantities ?? throw new ArgumentNullException(nameof(itemQuantities));
+
+            foreach (ItemQuantity itemQuantity in itemQuantities)
+            {
+                for (int i = 0; i < itemQuantity.Quantity; i++)
+                {
+                    RemoveItem(Items.First(item => item.ItemTypeID == itemQuantity.ItemID));
+                }
+            }
+        }
+
         public bool HasAllTheseItems(IEnumerable<ItemQuantity> items)
         {
             return items.All(item => Items.Count(i => i.ItemTypeID == item.ItemID) >= item.Quantity);

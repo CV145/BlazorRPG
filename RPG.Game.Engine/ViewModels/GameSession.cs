@@ -24,13 +24,18 @@ namespace RPG.Game.Engine.ViewModels
         MovementUnit Movement { get; }
         void OnLocationChanged(Location newLocation);
         void AttackCurrentMonster(GameItem? currentWeapon);
+        void ConsumeCurrentItem(GameItem? item);
+        void CraftItem(Recipe recipe);
+        void ProcessKeyPress(KeyProcessingEventArgs args);
+        void AddDisplayMessage(MessageBox message);
     }
 
-    //Current game state/instance
+    //Current game state/instance can be used inside Razor views
     public class GameSession : IGameSession
     {
         private readonly World _currentWorld;
 		private readonly int _maximumMessagesCount = 100;
+        private readonly Dictionary<string, Action> _userInputActions = new Dictionary<string, Action>();
 
 		public Player CurrentPlayer { get; private set; }
         public Location CurrentLocation { get; private set; }
@@ -50,6 +55,8 @@ namespace RPG.Game.Engine.ViewModels
 
 		public GameSession()
         {
+            InitializeUserInputActions();
+
             this.CurrentPlayer = new Player
 			{
 				Name = "Flynn",
@@ -70,6 +77,12 @@ namespace RPG.Game.Engine.ViewModels
 			{
 				CurrentPlayer.Inventory.AddItem(ItemFactory.CreateGameItem(1001));
 			}
+
+            CurrentPlayer.Inventory.AddItem(ItemFactory.CreateGameItem(2001));
+            CurrentPlayer.LearnRecipe(RecipeFactory.GetRecipeById(1));
+            CurrentPlayer.Inventory.AddItem(ItemFactory.CreateGameItem(3001));
+            CurrentPlayer.Inventory.AddItem(ItemFactory.CreateGameItem(3002));
+            CurrentPlayer.Inventory.AddItem(ItemFactory.CreateGameItem(3003));
         }
 
         public void OnLocationChanged(Location newLocation)
@@ -125,6 +138,64 @@ namespace RPG.Game.Engine.ViewModels
 			}
 		}
 
+        public void ConsumeCurrentItem(GameItem? item)
+        {
+            if (item is null || item.Category != GameItem.ItemCategory.Consumable)
+            {
+                AddDisplayMessage("Item Warning", "You must select a consumable item to use.");
+                return;
+            }
+
+            // player uses consumable item to heal themselves and item is removed from inventory.
+            CurrentPlayer.CurrentConsumable = item;
+            var message = CurrentPlayer.UseCurrentConsumable(CurrentPlayer);
+            AddDisplayMessage(message);
+        }
+
+        public void CraftItem(Recipe recipe)
+        {
+            _ = recipe ?? throw new ArgumentNullException(nameof(recipe));
+
+            var lines = new List<string>();
+
+            if (CurrentPlayer.Inventory.HasAllTheseItems(recipe.Ingredients))
+            {
+                CurrentPlayer.Inventory.RemoveItems(recipe.Ingredients);
+
+                foreach (ItemQuantity itemQuantity in recipe.OutputItems)
+                {
+                    for (int i = 0; i < itemQuantity.Quantity; i++)
+                    {
+                        GameItem outputItem = ItemFactory.CreateGameItem(itemQuantity.ItemID);
+                        CurrentPlayer.Inventory.AddItem(outputItem);
+                        lines.Add($"You craft 1 {outputItem.Name}");
+                    }
+                }
+
+                AddDisplayMessage("Item Creation", lines);
+            }
+            else
+            {
+                lines.Add("You do not have the required ingredients:");
+                foreach (ItemQuantity itemQuantity in recipe.Ingredients)
+                {
+                    lines.Add($"  {itemQuantity.Quantity} {ItemFactory.GetItemName(itemQuantity.ItemID)}");
+                }
+
+                AddDisplayMessage("Item Creation", lines);
+            }
+        }
+
+        public void ProcessKeyPress(KeyProcessingEventArgs args)
+        {
+            _ = args ?? throw new ArgumentNullException(nameof(args));
+
+            var key = args.Key.ToUpper();
+            if (_userInputActions.ContainsKey(key))
+            {
+                _userInputActions[key].Invoke();
+            }
+        }
         private void OnCurrentPlayerKilled(Monster currentMonster)
         {
             AddDisplayMessage("Player Defeated", $"The {currentMonster.Name} killed you.");
@@ -161,6 +232,7 @@ namespace RPG.Game.Engine.ViewModels
 			if (CurrentMonster != null)
 			{
 				AddDisplayMessage("Monster Encountered:", $"You see a {CurrentMonster.Name} here!");
+                MessageBoxBroker.Instance.RaiseMessage(new MessageBox("Monster Encountered2:", $"You see a {CurrentMonster.Name} here!"));
 			}
 		}
 
@@ -171,27 +243,7 @@ namespace RPG.Game.Engine.ViewModels
                 if (!CurrentPlayer.Quests.Any(q => q.PlayerQuest.Id == quest.Id))
                 {
                     CurrentPlayer.Quests.Add(new QuestStatus(quest));
-
-                    var messageLines = new List<string>
-                    {
-                        quest.Description,
-                        " Items to complete the quest: "
-                    };
-
-                    foreach (ItemQuantity q in quest.ItemsToComplete)
-                    {
-                        messageLines.Add($"{ItemFactory.CreateGameItem(q.ItemID).Name} (x{q.Quantity})");
-                    }
-
-                    messageLines.Add("Rewards for quest completion:");
-                    messageLines.Add($"   {quest.RewardExperiencePoints} experience points");
-                    messageLines.Add($"   {quest.RewardGold} gold");
-                    foreach (ItemQuantity itemQuantity in quest.RewardItems)
-                    {
-                        messageLines.Add($"   {itemQuantity.Quantity} {ItemFactory.CreateGameItem(itemQuantity.ItemID).Name} (x{itemQuantity.Quantity})");
-                    }
-
-                    AddDisplayMessage($"Quest Added - {quest.Name}", messageLines);
+                    AddDisplayMessage(quest.ToDisplayMessage());
                 }
             }
         }
@@ -209,15 +261,7 @@ namespace RPG.Game.Engine.ViewModels
                     if (CurrentPlayer.Inventory.HasAllTheseItems(quest.ItemsToComplete))
                     {
                         // Remove the quest completion items from the player's inventory
-                        foreach (ItemQuantity itemQuantity in quest.ItemsToComplete)
-                        {
-                            for (int i = 0; i < itemQuantity.Quantity; i++)
-                            {
-                                CurrentPlayer.Inventory.RemoveItem(
-                                    CurrentPlayer.Inventory.Items.First(
-                                        item => item.ItemTypeID == itemQuantity.ItemID));
-                            }
-                        }
+                        CurrentPlayer.Inventory.RemoveItems(quest.ItemsToComplete);
 
                         // give the player the quest rewards
                         var messageLines = new List<string>();
@@ -244,6 +288,18 @@ namespace RPG.Game.Engine.ViewModels
             }
         }
 
+        private void InitializeUserInputActions()
+        {
+            _userInputActions.Add("W", () => Movement.MoveNorth());
+            _userInputActions.Add("A", () => Movement.MoveWest());
+            _userInputActions.Add("S", () => Movement.MoveSouth());
+            _userInputActions.Add("D", () => Movement.MoveEast());
+            _userInputActions.Add("ARROWUP", () => Movement.MoveNorth());
+            _userInputActions.Add("ARROWLEFT", () => Movement.MoveWest());
+            _userInputActions.Add("ARROWDOWN", () => Movement.MoveSouth());
+            _userInputActions.Add("ARROWRIGHT", () => Movement.MoveEast());
+        }
+
         private void AddDisplayMessage(string title, string message) =>
 			AddDisplayMessage(title, new List<string> { message });
 
@@ -259,7 +315,7 @@ namespace RPG.Game.Engine.ViewModels
 			}
 		}
 
-        private void AddDisplayMessage(MessageBox message)
+        public void AddDisplayMessage(MessageBox message)
         {
             this.Messages.Insert(0, message);
 
