@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Data\items.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Data\items.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="D20Tek.DiceNotation.Standard" Version="3.3.2" />
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="6.0.15" />
   </ItemGroup>

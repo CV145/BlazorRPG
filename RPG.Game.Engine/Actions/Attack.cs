@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace RPG.Game.Engine.Actions
 {
+    //ArmorClass + Dexterity roll against opponent attack value
     public class Attack : IAction
     {
         private readonly GameItem _itemInUse;
@@ -33,21 +34,30 @@ namespace RPG.Game.Engine.Actions
             string actorName = (actor is Player) ? "You" : $"The {actor.Name.ToLower()}";
             string targetName = (target is Player) ? "you" : $"the {target.Name.ToLower()}";
             string title = (actor is Player) ? "Player Combat" : "Monster Combat";
+			string message;
 
-            int damage = DiceService.rollD(_damageDice);
-            string message;
-
-            if (damage == 0)
+            if (AttackSucceeded(actor, target))
             {
-                message = $"{actorName} missed {targetName}.";
+                int damage = DiceService.RollD(_damageDice);
+                target.TakeDamage(damage);
+
+                message = $"{actorName} hit {targetName} for {damage} point{(damage > 1 ? "s" : "")}.";
             }
             else
             {
-                target.TakeDamage(damage);
-                message = $"{actorName} hit {targetName} for {damage} point{(damage > 1 ? "s" : "")}.";
+                message = $"{actorName} missed {targetName}.";
             }
 
             return new MessageBox(title, message);
         }
-    }
+
+		private bool AttackSucceeded(LivingEntity actor, LivingEntity target)
+		{
+			int actorBonus = AbilityCalculator.CalculateBonus(actor.Strength);
+			int actorAttack = DiceService.RollD(20) + actorBonus + actor.Level;
+			int targetAC = target.ArmorClass + AbilityCalculator.CalculateBonus(target.Dexterity);
+
+			return actorAttack >= targetAC;
+		}
+	}
 }

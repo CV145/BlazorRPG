@@ -13,8 +13,13 @@ namespace RPG.Game.Engine.Models
         public int CurrentHitPoints { get; set; }
 
         public int MaximumHitPoints { get; set; }
+		public int Dexterity { get; set; } = 10;
 
-        public int Gold { get; set; }
+		public int Strength { get; set; } = 10;
+
+		public int ArmorClass { get; set; } = 10;
+
+		public int Gold { get; set; }
 
         public int Level { get; set; }
 
@@ -24,7 +29,8 @@ namespace RPG.Game.Engine.Models
         public bool HasCurrentWeapon => CurrentWeapon != null;
         public GameItem? CurrentConsumable { get; set; }
         public bool HasCurrentConsumable => CurrentConsumable != null;
-        public bool IsDead => CurrentHitPoints <= 0;
+        public bool IsAlive => CurrentHitPoints > 0;
+        public bool IsDead => !IsAlive;
         public void TakeDamage(int hitPointsOfDamage)
         {
             if (hitPointsOfDamage > 0)

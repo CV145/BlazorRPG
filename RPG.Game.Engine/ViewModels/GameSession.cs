@@ -34,6 +34,7 @@ namespace RPG.Game.Engine.ViewModels
     public class GameSession : IGameSession
     {
         private readonly World _currentWorld;
+        private readonly Battle _battle;
 		private readonly int _maximumMessagesCount = 100;
         private readonly Dictionary<string, Action> _userInputActions = new Dictionary<string, Action>();
 
@@ -56,16 +57,22 @@ namespace RPG.Game.Engine.ViewModels
 		public GameSession()
         {
             InitializeUserInputActions();
+            _battle = new Battle(
+                () => OnLocationChanged(_currentWorld.GetHomeLocation()),
+                () => GetMonsterAtCurrentLocation());
 
             this.CurrentPlayer = new Player
-			{
-				Name = "Flynn",
-				CharacterClass = "Samurai",
-				CurrentHitPoints = 10,
+            {
+                Name = "Flynn",
+                CharacterClass = "Samurai",
+                CurrentHitPoints = 10,
                 MaximumHitPoints = 10,
-				Gold = 1000,
-				ExperiencePoints = 0,
-				Level = 1
+                Gold = 1000,
+                ExperiencePoints = 0,
+                Level = 1,
+                Dexterity = DiceService.RollD(6),
+                Strength = DiceService.RollD(6),
+                ArmorClass = 10
 			};
 
             this._currentWorld = WorldFactory.CreateWorld();
@@ -100,42 +107,11 @@ namespace RPG.Game.Engine.ViewModels
         public void AttackCurrentMonster(GameItem? currentWeapon)
 		{
 			Console.WriteLine("Attacking current monster");
-			if (CurrentMonster is null)
-			{
-				AddDisplayMessage("Error", "Current monster is null");
-				return;
-			}
-
-			if (currentWeapon is null)
-			{
-				AddDisplayMessage("Combat Warning", "You must select a weapon to attack.");
-				return;
-			}
-
-            //act against monster with weapon
-            CurrentPlayer.CurrentWeapon = currentWeapon;
-			var message = CurrentPlayer.UseCurrentWeaponOn(CurrentMonster);
-			AddDisplayMessage(message);
-
-			// If monster if killed, collect rewards and loot
-			if (CurrentMonster.IsDead)
-			{
-                OnCurrentMonsterKilled(CurrentMonster);
-
-				// Get another monster to fight
-				GetMonsterAtCurrentLocation();
-			}
-			else
-			{
-				// If monster is still alive, let the monster attack
-				message = CurrentMonster.UseCurrentWeaponOn(CurrentPlayer);
-                AddDisplayMessage(message);
-
-				if (CurrentPlayer.IsDead)
-				{
-                    OnCurrentPlayerKilled(CurrentMonster);
-				}
-			}
+            if (CurrentMonster is null)
+            {
+                CurrentPlayer.CurrentWeapon = currentWeapon;
+                _battle.Attack(CurrentPlayer, CurrentMonster);
+            }
 		}
 
         public void ConsumeCurrentItem(GameItem? item)

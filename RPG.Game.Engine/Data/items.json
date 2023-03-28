@@ -1,0 +1,98 @@
+[
+  {
+    "Id": 1001,
+    "Category": 1,
+    "Name": "Pointy stick",
+    "Price": 1,
+    "Damage": "1d2"
+  },
+  {
+    "Id": 1002,
+    "Category": 1,
+    "Name": "Rusty sword",
+    "Price": 5,
+    "Damage": "1d3"
+  },
+  {
+    "Id": 1501,
+    "Category": 1,
+    "Name": "Snake fang",
+    "Price": 0,
+    "Damage": "1d2"
+  },
+  {
+    "Id": 1502,
+    "Category": 1,
+    "Name": "Rat claw",
+    "Price": 0,
+    "Damage": "1d2"
+  },
+  {
+    "Id": 1503,
+    "Category": 1,
+    "Name": "Spider fang",
+    "Price": 0,
+    "Damage": "1d4"
+  },
+  {
+    "Id": 2001,
+    "Category": 2,
+    "Name": "Granola bar",
+    "Price": 5,
+    "Heals": 2
+  },
+  {
+    "Id": 3001,
+    "Category": 0,
+    "Name": "Oats",
+    "Price": 1
+  },
+  {
+    "Id": 3002,
+    "Category": 0,
+    "Name": "Honey",
+    "Price": 2
+  },
+  {
+    "Id": 3003,
+    "Category": 0,
+    "Name": "Raisins",
+    "Price": 2
+  },
+  {
+    "Id": 9001,
+    "Category": 0,
+    "Name": "Snake fang",
+    "Price": 1
+  },
+  {
+    "Id": 9002,
+    "Category": 0,
+    "Name": "Snakeskin",
+    "Price": 2
+  },
+  {
+    "Id": 9003,
+    "Category": 0,
+    "Name": "Rat tail",
+    "Price": 1
+  },
+  {
+    "Id": 9004,
+    "Category": 0,
+    "Name": "Rat fur",
+    "Price": 2
+  },
+  {
+    "Id": 9005,
+    "Category": 0,
+    "Name": "Spider fang",
+    "Price": 1
+  },
+  {
+    "Id": 9006,
+    "Category": 0,
+    "Name": "Spider silk",
+    "Price": 2
+  }
+]

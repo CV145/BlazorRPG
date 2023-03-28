@@ -13,7 +13,7 @@ namespace RPG.Game.Engine.Services
      */
     public static class DiceService
     {
-        public static int rollD(int amount)
+        public static int RollD(int amount)
         {
             Console.WriteLine("rolling dice");
             Random random = new Random();
