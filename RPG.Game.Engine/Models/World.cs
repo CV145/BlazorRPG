@@ -10,10 +10,20 @@ namespace RPG.Game.Engine.Models
     {
         private readonly IList<Location> locations;
 
+        public World() 
+        {
+            locations = new List<Location>();
+        }
+
         //World has locations
         public World(IEnumerable<Location> locs)
         {
             this.locations = locs is null ? new List<Location>() : locs.ToList();
+        }
+
+        internal void AddLocation(Location location)
+        {
+            locations.Add(location);
         }
 
         //Does a location exist at (x,y)?

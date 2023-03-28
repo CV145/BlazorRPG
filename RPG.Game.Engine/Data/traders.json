@@ -1,0 +1,32 @@
+[
+  {
+    "Id": 101,
+    "Name": "Susan",
+    "Inventory": [
+      {
+        "Id": 1001,
+        "Qty": 1
+      }
+    ]
+  },
+  {
+    "Id": 102,
+    "Name": "Farmer Ted",
+    "Inventory": [
+      {
+        "Id": 1001,
+        "Qty": 1
+      }
+    ]
+  },
+  {
+    "Id": 103,
+    "Name": "Pete the Herbalist",
+    "Inventory": [
+      {
+        "Id": 1001,
+        "Qty": 1
+      }
+    ]
+  }
+]

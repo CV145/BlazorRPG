@@ -1,4 +1,6 @@
-﻿using RPG.Game.Engine.Models;
+﻿using D20Tek.Common.Helpers;
+using RPG.Game.Engine.Factories.DTOs;
+using RPG.Game.Engine.Models;
 using RPG.Game.Engine.Services;
 using System;
 using System.Collections.Generic;
@@ -10,70 +12,26 @@ namespace RPG.Game.Engine.Factories
 {
     internal static class MonsterFactory
     {
-        public static Monster GetMonster(int monsterID)
+        private const string _resourceNamespace = "RPG.Game.Engine.Data.monsters.json";
+        private static readonly IList<MonsterTemplate> _monsterTemplates = JsonSerializationHelper.DeserializeResourceStream<MonsterTemplate>(_resourceNamespace);
+
+        public static Monster GetMonster(int monsterId)
         {
-            switch (monsterID)
+            // first find the monster template by its id.
+            var template = _monsterTemplates.First(p => p.Id == monsterId);
+
+            // then create an instance of monster from that template.
+            var weapon = ItemFactory.CreateGameItem(template.WeaponId);
+            var monster = new Monster(template.Id, template.Name, template.Image, template.Dex, template.Str,
+                                      template.AC, template.MaxHP, weapon, template.RewardXP, template.Gold);
+
+            // finally add random loot for this monster instance.
+            foreach (var loot in template.LootItems)
             {
-                case 1:
-                    Monster snake = new Monster
-                    {
-                        Name = "Snake",
-                        ImageName = "/images/monsters/snake.jpg",
-                        CurrentHitPoints = 4,
-                        MaximumHitPoints = 4,
-                        RewardExperiencePoints = 5,
-                        Gold = 1,
-						Dexterity = 15,
-						Strength = 12,
-						ArmorClass = 10
-					};
-
-                    snake.CurrentWeapon = ItemFactory.CreateGameItem(1501);
-                    AddLootItem(snake, 9001, 25);
-                    AddLootItem(snake, 9002, 75);
-                    return snake;
-
-                case 2:
-                    Monster rat = new Monster
-                    {
-                        Name = "Rat",
-                        ImageName = "/images/monsters/rat.jpg",
-                        CurrentHitPoints = 5,
-                        MaximumHitPoints = 5,
-                        RewardExperiencePoints = 5,
-                        Gold = 1,
-						Dexterity = 8,
-						Strength = 10,
-						ArmorClass = 10
-					};
-
-                    rat.CurrentWeapon = ItemFactory.CreateGameItem(1502);
-                    AddLootItem(rat, 9003, 25);
-                    AddLootItem(rat, 9004, 75);
-                    return rat;
-
-                case 3:
-                    Monster giantSpider = new Monster
-                    {
-                        Name = "Giant Spider",
-                        ImageName = "/images/monsters/giant-spider.jpg",
-                        CurrentHitPoints = 10,
-                        MaximumHitPoints = 10,
-                        RewardExperiencePoints = 10,
-                        Gold = 3,
-						Dexterity = 12,
-						Strength = 15,
-						ArmorClass = 12
-					};
-
-                    giantSpider.CurrentWeapon = ItemFactory.CreateGameItem(1503);
-                    AddLootItem(giantSpider, 9005, 25);
-                    AddLootItem(giantSpider, 9006, 75);
-                    return giantSpider;
-
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(monsterID));
+                AddLootItem(monster, loot.Id, loot.Perc);
             }
+
+            return monster;
         }
 
         private static void AddLootItem(Monster monster, int itemID, int percentage)

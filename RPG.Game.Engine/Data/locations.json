@@ -1,0 +1,87 @@
+[
+  {
+    "X": -2,
+    "Y": -1,
+    "Name": "Farmer's Field",
+    "ImageName": "/images/locations/FarmFields.jpg",
+    "Description": "There are rows of corn here, with giant rats hiding between them.",
+    "Monsters": [
+      {
+        "Id": 2,
+        "Perc": 75
+      }
+    ]
+  },
+  {
+    "X": -1,
+    "Y": -1,
+    "Name": "Farmer's House",
+    "ImageName": "/images/locations/Farmhouse.jpg",
+    "Description": "This is the house of your neighbor, Farmer Ted.",
+    "TraderId": 102
+  },
+  {
+    "X": 0,
+    "Y": -1,
+    "Name": "Home",
+    "ImageName": "/images/locations/Home.jpg",
+    "Description": "This is your home."
+  },
+  {
+    "X": -1,
+    "Y": 0,
+    "Name": "Trading Shop",
+    "ImageName": "/images/locations/Trader.jpg",
+    "Description": "The shop of Susan, the trader.",
+    "TraderId": 101
+  },
+  {
+    "X": 0,
+    "Y": 0,
+    "Name": "Town Square",
+    "ImageName": "/images/locations/TownSquare.jpg",
+    "Description": "You see a fountain here."
+  },
+  {
+    "X": 1,
+    "Y": 0,
+    "Name": "Town Gate",
+    "ImageName": "/images/locations/TownGate.jpg",
+    "Description": "There is a gate here, protecting the town from giant spiders."
+  },
+  {
+    "X": 2,
+    "Y": 0,
+    "Name": "Spider Forest",
+    "ImageName": "/images/locations/SpiderForest.jpg",
+    "Description": "The trees in this forest are covered with spider webs.",
+    "Monsters": [
+      {
+        "Id": 3,
+        "Perc": 100
+      }
+    ]
+  },
+  {
+    "X": 0,
+    "Y": 1,
+    "Name": "Herbalist's Hut",
+    "ImageName": "/images/locations/HerbalistsHut.jpg",
+    "Description": "You see a small hut, with plants drying from the roof.",
+    "TraderId": 103,
+    "Quests": [ 1 ]
+  },
+  {
+    "X": 0,
+    "Y": 2,
+    "Name": "Herbalist's Garden",
+    "ImageName": "/images/locations/HerbalistsGarden.jpg",
+    "Description": "There are many plants here, with snakes hiding behind them.",
+    "Monsters": [
+      {
+        "Id": 1,
+        "Perc": 50
+      }
+    ]
+  }
+]

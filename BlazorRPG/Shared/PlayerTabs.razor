@@ -85,7 +85,7 @@
 
     //These params show up in the component that uses this component
     [Parameter] //databinding
-    public Player Player { get; set; } = new Player();
+    public Player Player { get; set; } = Player.Empty;
 
     [Parameter]
     public EventCallback<Recipe> CraftItemClicked { get; set; }

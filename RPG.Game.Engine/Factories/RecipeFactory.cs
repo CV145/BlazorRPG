@@ -1,4 +1,6 @@
-﻿using RPG.Game.Engine.Models;
+﻿using D20Tek.Common.Helpers;
+using RPG.Game.Engine.Factories.DTOs;
+using RPG.Game.Engine.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,27 +11,30 @@ namespace RPG.Game.Engine.Factories
 {
     internal static class RecipeFactory
     {
-        private static readonly List<Recipe> _recipes = new List<Recipe>();
-
-        static RecipeFactory()
-        {
-            Recipe granolaBar = new Recipe(1, "Granola bar recipe");
-            granolaBar.AddIngredient(3001, 1);
-            granolaBar.AddIngredient(3002, 1);
-            granolaBar.AddIngredient(3003, 1);
-            granolaBar.AddOutputItem(2001, 1);
-
-            _recipes.Add(granolaBar);
-        }
+        private const string _resourceNamespace = "RPG.Game.Engine.Data.recipes.json";
+        private static readonly IList<RecipeTemplate> _recipeTemplates = JsonSerializationHelper.DeserializeResourceStream<RecipeTemplate>(_resourceNamespace);
 
         public static Recipe GetRecipeById(int id)
         {
-            Console.WriteLine("Recipe ID to grab: " + id);
-            Console.WriteLine("All recipes:");
-            _recipes.ForEach(Console.WriteLine);
+            // first find the quest template by its id.
+            var template = _recipeTemplates.First(p => p.Id == id);
 
-            //First such that x's id matches given id
-            return _recipes.First(x => x.Id == id) ?? throw new NullReferenceException();
+            // then create an instance of quest from that template.
+            var recipe = new Recipe(template.Id, template.Name);
+
+            // next add each pre-requisite for the quest.
+            foreach (var req in template.Ingredients)
+            {
+                recipe.AddIngredient(req.Id, req.Qty);
+            }
+
+            // finally add each reward item given from the quest.
+            foreach (var item in template.OutputItems)
+            {
+                recipe.AddOutputItem(item.Id, item.Qty);
+            }
+
+            return recipe;
         }
     }
 }

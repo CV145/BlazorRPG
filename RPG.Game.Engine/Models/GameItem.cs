@@ -38,7 +38,7 @@ namespace RPG.Game.Engine.Models
 
         public bool IsUnique { get; }
 
-        public IAction? Action { get; private set; }
+        public IAction? Action { get; set; }
 
         public GameItem()
         {

@@ -62,18 +62,15 @@ namespace RPG.Game.Engine.ViewModels
                 () => GetMonsterAtCurrentLocation());
 
             this.CurrentPlayer = new Player
-            {
-                Name = "Flynn",
-                CharacterClass = "Samurai",
-                CurrentHitPoints = 10,
-                MaximumHitPoints = 10,
-                Gold = 1000,
-                ExperiencePoints = 0,
-                Level = 1,
-                Dexterity = DiceService.RollD(6),
-                Strength = DiceService.RollD(6),
-                ArmorClass = 10
-			};
+            (
+                "Flynn",
+                "Samurai",
+                DiceService.RollD(6),
+                DiceService.RollD(6),
+                10,
+                10,
+                10
+			);
 
             this._currentWorld = WorldFactory.CreateWorld();
             this.Movement = new MovementUnit(this._currentWorld);
@@ -107,7 +104,7 @@ namespace RPG.Game.Engine.ViewModels
         public void AttackCurrentMonster(GameItem? currentWeapon)
 		{
 			Console.WriteLine("Attacking current monster");
-            if (CurrentMonster is null)
+            if (CurrentMonster != null)
             {
                 CurrentPlayer.CurrentWeapon = currentWeapon;
                 _battle.Attack(CurrentPlayer, CurrentMonster);

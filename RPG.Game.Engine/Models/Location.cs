@@ -10,17 +10,29 @@ namespace RPG.Game.Engine.Models
 {
     public class Location
     {
-        public int XCoordinate { get; set; }
+        public Location(int x, int y, string name, string description, string image, Trader? trader = null)
+        {
+            XCoordinate = x;
+            YCoordinate = y;
+            Name = name;
+            Description = description;
+            ImageName = image;
+            TraderHere = trader;
+        }
+        public int XCoordinate { get; }
 
-        public int YCoordinate { get; set; }
+        public int YCoordinate { get; }
 
-        public string Name { get; set; } = string.Empty;
+        public string Name { get; } = string.Empty;
 
-        public string Description { get; set; } = string.Empty;
+        public string Description { get; } = string.Empty;
 
-        public string ImageName { get; set; } = string.Empty;
-        public IList<Quest> QuestsAvailableHere { get; set; } = new List<Quest>();
-        public IList<MonsterEncounter> MonstersHere { get; set; } = new List<MonsterEncounter>();
+        public string ImageName { get; } = string.Empty;
+
+        public IList<Quest> QuestsAvailableHere { get; } = new List<Quest>();
+
+        public IList<MonsterEncounter> MonstersHere { get; } = new List<MonsterEncounter>();
+
 
         public Trader? TraderHere { get; set; } = null;
 

@@ -8,10 +8,23 @@
 
   <ItemGroup>
     <None Remove="Data\items.json" />
+    <None Remove="Data\locations.json" />
+    <None Remove="Data\monsters.json" />
+    <None Remove="Data\quests.json" />
+    <None Remove="Data\recipes.json" />
+    <None Remove="Data\traders.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Data\quests.json" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Data\items.json" />
+    <EmbeddedResource Include="Data\locations.json" />
+    <EmbeddedResource Include="Data\monsters.json" />
+    <EmbeddedResource Include="Data\recipes.json" />
+    <EmbeddedResource Include="Data\traders.json" />
   </ItemGroup>
 
   <ItemGroup>

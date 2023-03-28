@@ -1,0 +1,68 @@
+[
+  {
+    "Id": 1,
+    "Name": "Snake",
+    "Dex": 15,
+    "Str": 12,
+    "AC": 10,
+    "MaxHP": 4,
+    "WeaponId": 1501,
+    "RewardXP": 5,
+    "Gold": 1,
+    "Image": "/images/monsters/snake.jpg",
+    "LootItems": [
+      {
+        "Id": 9001,
+        "Perc": 25
+      },
+      {
+        "Id": 9002,
+        "Perc": 75
+      }
+    ]
+  },
+  {
+    "Id": 2,
+    "Name": "Rat",
+    "Dex": 8,
+    "Str": 10,
+    "AC": 10,
+    "MaxHP": 5,
+    "WeaponId": 1502,
+    "RewardXP": 5,
+    "Gold": 1,
+    "Image": "/images/monsters/rat.jpg",
+    "LootItems": [
+      {
+        "Id": 9003,
+        "Perc": 25
+      },
+      {
+        "Id": 9004,
+        "Perc": 75
+      }
+    ]
+  },
+  {
+    "Id": 3,
+    "Name": "Giant Spider",
+    "Dex": 12,
+    "Str": 15,
+    "AC": 12,
+    "MaxHP": 10,
+    "WeaponId": 1503,
+    "RewardXP": 10,
+    "Gold": 3,
+    "Image": "/images/monsters/giant-spider.jpg",
+    "LootItems": [
+      {
+        "Id": 9005,
+        "Perc": 25
+      },
+      {
+        "Id": 9006,
+        "Perc": 75
+      }
+    ]
+  }
+]
