@@ -8,7 +8,12 @@ namespace RPG.Game.Engine.Models
 {
     public class ItemBundle
     {
-        public GameItem Item { get; set; } = GameItem.Empty;
+        public ItemBundle(GameItem item, int quantity)
+        {
+            Item = item;
+            Quantity = quantity;
+        }
+        public GameItem Item { get; }
         public int Quantity { get; set; }
     }
 }

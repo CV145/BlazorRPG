@@ -46,14 +46,14 @@ namespace RPG.Game.Engine.Models
 
             if (item.IsUnique)
             {
-                _backingGroupedInventory.Add(new ItemBundle { Item = item, Quantity = 1 });
+                _backingGroupedInventory.Add(new ItemBundle (item,1));
             }
             else
             {
                 //if none of the items match by given item id - add new item bundle
                 if (_backingGroupedInventory.All(gi => gi.Item.ItemTypeID != item.ItemTypeID))
                 {
-                    _backingGroupedInventory.Add(new ItemBundle { Item = item, Quantity = 0 });
+                    _backingGroupedInventory.Add(new ItemBundle (item, 0 ));
                 }
 
                 _backingGroupedInventory.First(gi => gi.Item.ItemTypeID == item.ItemTypeID).Quantity++;

@@ -4,35 +4,35 @@
     "Category": 1,
     "Name": "Pointy stick",
     "Price": 1,
-    "Damage": "1d2"
+    "Damage": 2
   },
   {
     "Id": 1002,
     "Category": 1,
     "Name": "Rusty sword",
     "Price": 5,
-    "Damage": "1d3"
+    "Damage": 3
   },
   {
     "Id": 1501,
     "Category": 1,
     "Name": "Snake fang",
     "Price": 0,
-    "Damage": "1d2"
+    "Damage": 2
   },
   {
     "Id": 1502,
     "Category": 1,
     "Name": "Rat claw",
     "Price": 0,
-    "Damage": "1d2"
+    "Damage": 2
   },
   {
     "Id": 1503,
     "Category": 1,
     "Name": "Spider fang",
     "Price": 0,
-    "Damage": "1d4"
+    "Damage": 4
   },
   {
     "Id": 2001,

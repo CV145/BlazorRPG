@@ -17,7 +17,7 @@ namespace RPG.Game.Engine.Factories.DTOs
 
         public int Price { get; set; }
 
-        public string Damage { get; set; } = string.Empty;
+        public int Damage { get; set; }
 
         public int Heals { get; set; }
     }
