@@ -1,4 +1,5 @@
 ﻿using RPG.Game.Engine.Services;
+using RPG.Game.Engine.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,42 +27,20 @@ namespace RPG.Game.Engine.Models
 			_onOpponentKilled = onOpponentKilled;
 		}
 
-		public void Attack(Player player, Monster opponent)
+		public void Attack(Player player, Monster opponent, GameSession session)
 		{
 			_ = player ?? throw new ArgumentNullException(nameof(player));
 			_ = opponent ?? throw new ArgumentNullException(nameof(opponent));
 
-			if (FirstAttacker(player, opponent) == Combatant.Player)
-			{
-				bool battleContinues = AttackOpponent(player, opponent);
+				bool battleContinues = AttackOpponent(player, opponent, session);
 				if (battleContinues)
 				{
 					// if the monster is still alive, it attacks the player.
 					AttackPlayer(player, opponent);
 				}
-			}
-			else
-			{
-				bool battleContinues = AttackPlayer(player, opponent);
-				if (battleContinues)
-				{
-					// if the player is still alive, attack the monster.
-					AttackOpponent(player, opponent);
-				}
-			}
 		}
 
-		private Combatant FirstAttacker(Player player, Monster opponent)
-		{
-			int playerBonus = AbilityCalculator.CalculateBonus(player.Dexterity);
-			int oppBonus = AbilityCalculator.CalculateBonus(opponent.Dexterity);
-			int playerInit = DiceService.RollD(20) + playerBonus;
-			int oppInit = DiceService.RollD(20) + oppBonus;
-
-			return (playerInit >= oppInit) ? Combatant.Player : Combatant.Opponent;
-		}
-
-		private bool AttackOpponent(Player player, Monster opponent)
+		private bool AttackOpponent(Player player, Monster opponent, GameSession session)
 		{
 			if (player.CurrentWeapon == null)
 			{
@@ -76,7 +55,7 @@ namespace RPG.Game.Engine.Models
 			//if monster is killed, collect rewards and loot
 			if(opponent.IsDead)
 			{
-				OnOpponentKilled(player, opponent);
+				OnOpponentKilled(player, opponent, session);
 				return false;
 			}
 
@@ -106,10 +85,12 @@ namespace RPG.Game.Engine.Models
 		}
 
 
-		private void OnOpponentKilled(Player player, Monster opponent)
+		private void OnOpponentKilled(Player player, Monster opponent, GameSession session)
 		{
-			var messageLines = new List<string>();
-			messageLines.Add($"You defeated the {opponent.Name}!");
+			var messageLines = new List<string>
+			{
+				$"You defeated the {opponent.Name}!"
+			};
 
 			player.AddExperience(opponent.RewardExperiencePoints);
 			messageLines.Add($"You receive {opponent.RewardExperiencePoints} experience points.");
@@ -125,7 +106,9 @@ namespace RPG.Game.Engine.Models
 
 			_messageBroker.RaiseMessage(new MessageBox("Monster Defeated", messageLines));
 
-			_onOpponentKilled.Invoke();  // Action to get another opponent.
+			//_onOpponentKilled.Invoke();  // Action to get another opponent.
+
+			session.DefeatCurrentMonster();
 		}
 	}
 }

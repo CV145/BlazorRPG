@@ -107,9 +107,14 @@ namespace RPG.Game.Engine.ViewModels
             if (CurrentMonster != null)
             {
                 CurrentPlayer.CurrentWeapon = currentWeapon;
-                _battle.Attack(CurrentPlayer, CurrentMonster);
+                _battle.Attack(CurrentPlayer, CurrentMonster, this);
             }
 		}
+
+        public void DefeatCurrentMonster()
+        {
+            CurrentMonster = null;
+        }
 
         public void ConsumeCurrentItem(GameItem? item)
         {
@@ -195,6 +200,7 @@ namespace RPG.Game.Engine.ViewModels
             }
 
             AddDisplayMessage("Monster Defeated", messageLines);
+            CurrentMonster = null;
         }
 
 
@@ -204,8 +210,7 @@ namespace RPG.Game.Engine.ViewModels
 
 			if (CurrentMonster != null)
 			{
-				AddDisplayMessage("Monster Encountered:", $"You see a {CurrentMonster.Name} here!");
-                MessageBoxBroker.Instance.RaiseMessage(new MessageBox("Monster Encountered2:", $"You see a {CurrentMonster.Name} here!"));
+                MessageBoxBroker.Instance.RaiseMessage(new MessageBox("Monster Encountered:", $"You see a {CurrentMonster.Name} here!"));
 			}
 		}
 

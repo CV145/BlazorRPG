@@ -18,8 +18,11 @@
                     <DisplayMessageListView MessageBoxes="@ViewModel.Messages" />
                 </Column>
                 <Column ColumnSize="ColumnSize.Is3.OnWidescreen.Is12" Style="height: 400px; overflow-y:scroll;">
+                    @if (ViewModel.HasMonster)
+                    {
+                        <MonsterComponent Monster="@ViewModel.CurrentMonster" />
+                    }
                     <LocationComponent Location="@ViewModel.CurrentLocation" />
-                    <MonsterComponent Monster="@ViewModel.CurrentMonster" />
                     <TraderComponent Trader="@ViewModel.CurrentTrader" Player="@ViewModel.CurrentPlayer"
                                      InventoryChanged="@StateHasChanged" />
                 </Column>
