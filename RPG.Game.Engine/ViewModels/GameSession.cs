@@ -65,8 +65,8 @@ namespace RPG.Game.Engine.ViewModels
             (
                 "Flynn",
                 "Samurai",
-                DiceService.RollD(6),
-                DiceService.RollD(6),
+                6,
+                6,
                 10,
                 10,
                 10

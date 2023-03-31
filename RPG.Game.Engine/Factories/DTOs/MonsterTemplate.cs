@@ -28,6 +28,8 @@ namespace RPG.Game.Engine.Factories.DTOs
 
         public string Image { get; set; } = string.Empty;
 
+        public bool isBoss { get; }
+
         public IEnumerable<LootItem> LootItems { get; set; } = new List<LootItem>();
     }
 }

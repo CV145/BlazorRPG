@@ -27,6 +27,7 @@ namespace RPG.Game.Engine.ViewModels
             CurrentLocation = newLocation;
         }
 
+        public bool FightingABoss { get; set; }
         public bool CanMoveNorth =>
             this.world.HasLocationAt(this.CurrentLocation.XCoordinate, this.CurrentLocation.YCoordinate + 1);
 

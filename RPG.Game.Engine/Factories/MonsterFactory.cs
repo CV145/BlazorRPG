@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace RPG.Game.Engine.Factories
 {
+    //Serializes the json data file of monsters and stores it inside Data Transfer Objects
     internal static class MonsterFactory
     {
         private const string _resourceNamespace = "RPG.Game.Engine.Data.monsters.json";
@@ -23,7 +24,7 @@ namespace RPG.Game.Engine.Factories
             // then create an instance of monster from that template.
             var weapon = ItemFactory.CreateGameItem(template.WeaponId);
             var monster = new Monster(template.Id, template.Name, template.Image, template.Dex, template.Str,
-                                      template.AC, template.MaxHP, weapon, template.RewardXP, template.Gold);
+                                      template.AC, template.MaxHP, weapon, template.RewardXP, template.Gold, template.isBoss);
 
             // finally add random loot for this monster instance.
             foreach (var loot in template.LootItems)

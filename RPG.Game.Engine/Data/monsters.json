@@ -54,6 +54,7 @@
     "RewardXP": 10,
     "Gold": 3,
     "Image": "/images/monsters/giant-spider.jpg",
+    "isBoss":  true,
     "LootItems": [
       {
         "Id": 9005,

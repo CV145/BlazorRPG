@@ -10,13 +10,16 @@ namespace RPG.Game.Engine.Models
     {
         public Monster(int id, string name, string imageName, int dex, int str, int ac,
                        int maximumHitPoints, GameItem currentWeapon,
-                       int rewardExperiencePoints, int gold) :
+                       int rewardExperiencePoints, int gold, bool isBoss) :
             base(id, name, dex, str, ac, maximumHitPoints, maximumHitPoints, gold)
         {
             ImageName = imageName;
             CurrentWeapon = currentWeapon;
             RewardExperiencePoints = rewardExperiencePoints;
+            IsBoss = isBoss;
         }
+
+        public bool IsBoss { get; }
 
         public string ImageName { get; } = string.Empty;
 

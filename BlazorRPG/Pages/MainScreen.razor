@@ -2,22 +2,22 @@
 @inject IJSRuntime jsRuntime //service that lets us interact with javascript methods
 @inject GameSession ViewModel //dependency-injection-
 
-<div @onkeydown="@KeyDown" tabindex="0" @ref="pageRoot">
+<div class="container" @onkeydown="@KeyDown" tabindex="0" @ref="pageRoot" style="margin-left:0px">
     <Row Style="height: 5vh; min-height: 32px">
         <Column ColumnSize="ColumnSize.Is12" Style="background-color: aliceblue">
             <Heading Size="HeadingSize.Is3">Simple RPG</Heading>
         </Column>
     </Row>
-    <Row Style="height: 60vh">
+    <Row> <!--Style="height: 60vh">-->
         <Column ColumnSize="ColumnSize.Is3.OnWidescreen.Is12" Style="background-color: aquamarine">
             <PlayerComponent Player="@ViewModel.CurrentPlayer" />
         </Column>
         <Column ColumnSize="ColumnSize.Is9.OnWidescreen.Is12" Style="background-color: beige">
-            <Row Margin="Margin.Is2.OnY">
-                <Column ColumnSize="ColumnSize.Is9.OnWidescreen.Is12">
+            <Row> <!--Margin="Margin.Is2.OnY">-->
+                <Column ColumnSize="ColumnSize.Is8.OnWidescreen.Is12">
                     <DisplayMessageListView MessageBoxes="@ViewModel.Messages" />
                 </Column>
-                <Column ColumnSize="ColumnSize.Is3.OnWidescreen.Is12" Style="height: 400px; overflow-y:scroll;">
+                <Column ColumnSize="ColumnSize.Is4.OnWidescreen.Is12" Style="height: 500px; overflow-y:scroll;">
                     @if (ViewModel.HasMonster)
                     {
                         <MonsterComponent Monster="@ViewModel.CurrentMonster" />
@@ -29,7 +29,7 @@
             </Row>
         </Column>
     </Row>
-    <Row Style="height: 30vh">
+    <Row> <!--Style="height: 35vh"-->
         <Column ColumnSize="ColumnSize.Is3.OnWidescreen.Is12" Style="background-color: burlywood">
 
             <PlayerTabs Player="@ViewModel.CurrentPlayer" CraftItemClicked="@ViewModel.CraftItem" DisplayMessageCreated="@ViewModel.AddDisplayMessage" />
